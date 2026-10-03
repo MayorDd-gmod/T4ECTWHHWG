@@ -3,51 +3,89 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>ДФД · Terminal</title>
+    <title>CFD · Terminal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #e53935; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(10,10,10,0.5); }
+        ::-webkit-scrollbar-thumb { background: #e53935; border-radius: 4px; }
 
         :root {
             --neon-cyan: #e53935; --neon-pink: #ff1744; --neon-yellow: #ffaa00;
             --neon-purple: #c62828; --neon-green: #66bb6a; --neon-red: #e53935;
             --neon-orange: #ff8800;
-            --bg-dark: #0a0a0a; --bg-panel: #121212; --bg-panel-2: #1a1a1a;
-            --border: #2a2a2a; --text: #ffffff; --text-dim: #888888;
+            --bg-dark: #0a0a0a; --bg-panel: rgba(18, 18, 18, 0.92); --bg-panel-2: rgba(26, 26, 26, 0.85);
+            --border: #2a2a2a; --text: #ffffff; --text-dim: #999999;
             --theme-accent: #e53935; --theme-accent-2: #ff1744;
         }
         body[data-theme="light"] {
-            --bg-dark: #ffffff; --bg-panel: #ffffff; --bg-panel-2: #f5f5f5;
+            --bg-dark: #f5f5f5; --bg-panel: rgba(255, 255, 255, 0.95); --bg-panel-2: rgba(245, 245, 245, 0.9);
             --border: #e0e0e0; --text: #000000; --text-dim: #666666;
             --theme-accent: #c62828; --theme-accent-2: #e53935;
         }
 
-        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); line-height: 1.5; min-height: 100vh; overflow-x: hidden; font-size: 14px; letter-spacing: 0.2px; }
+        body { font-family: 'Inter', sans-serif; color: var(--text); line-height: 1.5; min-height: 100vh; overflow-x: hidden; font-size: 14px; letter-spacing: 0.2px; position: relative; background: #0a0a0a; }
 
-        .auth-screen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .auth-box { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 48px 44px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
-        body[data-theme="light"] .auth-box { box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
-        .auth-logo { font-size: 2.4rem; font-weight: 900; letter-spacing: 8px; text-align: center; color: #fff; margin-bottom: 8px; }
-        body[data-theme="light"] .auth-logo { color: #000; }
-        .auth-logo span { color: var(--theme-accent); }
-        .auth-sub { text-align: center; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 3px; margin-bottom: 32px; text-transform: uppercase; font-weight: 600; }
+        /* ФОН ГОРЯЩЕГО ЛЕСА */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(255, 100, 0, 0.45) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(255, 50, 0, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(200, 20, 0, 0.55) 0%, transparent 60%),
+                linear-gradient(180deg, #1a0505 0%, #2a0808 30%, #150303 60%, #0a0a0a 100%);
+            z-index: -2;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                repeating-linear-gradient(90deg, transparent 0px, rgba(0,0,0,0.3) 2px, transparent 4px, transparent 60px, rgba(0,0,0,0.2) 62px, transparent 64px),
+                radial-gradient(ellipse at 30% 40%, rgba(255, 150, 0, 0.15) 0%, transparent 30%),
+                radial-gradient(ellipse at 70% 60%, rgba(255, 80, 0, 0.12) 0%, transparent 30%);
+            z-index: -1;
+            opacity: 0.7;
+            animation: fireFlicker 4s ease-in-out infinite alternate;
+        }
+        @keyframes fireFlicker {
+            0% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+            100% { opacity: 0.7; }
+        }
+        body[data-theme="light"]::before {
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(255, 150, 50, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(255, 100, 50, 0.2) 0%, transparent 50%),
+                linear-gradient(180deg, #fff5f0 0%, #ffe8e0 50%, #ffffff 100%);
+        }
+        body[data-theme="light"]::after { opacity: 0.3; }
+
+        .auth-screen { position: fixed; inset: 0; background: rgba(10,10,10,0.92); backdrop-filter: blur(8px); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        body[data-theme="light"] .auth-screen { background: rgba(255,255,255,0.95); }
+        .auth-box { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 48px 44px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 60px rgba(229,57,53,0.15); backdrop-filter: blur(20px); }
+        body[data-theme="light"] .auth-box { box-shadow: 0 10px 40px rgba(0,0,0,0.1), 0 0 40px rgba(229,57,53,0.1); }
+        .auth-logo { font-size: 2.6rem; font-weight: 900; letter-spacing: 10px; text-align: center; color: #fff; margin-bottom: 8px; text-shadow: 0 0 30px rgba(229,57,53,0.6); }
+        body[data-theme="light"] .auth-logo { color: #000; text-shadow: 0 0 20px rgba(229,57,53,0.3); }
+        .auth-sub { text-align: center; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 4px; margin-bottom: 32px; text-transform: uppercase; font-weight: 600; }
         .auth-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
-        .auth-tabs button { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 11px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 8px; transition: 0.2s; }
-        .auth-tabs button.active { background: var(--theme-accent); border-color: var(--theme-accent); color: #fff; }
+        .auth-tabs button { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 11px; font-weight: 600; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .auth-tabs button.active { background: var(--theme-accent); border-color: var(--theme-accent); color: #fff; box-shadow: 0 0 20px rgba(229,57,53,0.4); }
 
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; font-weight: 600; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 14px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: 0.2s; }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--theme-accent); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 14px; background: rgba(10,10,10,0.6); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; transition: 0.2s; }
+        body[data-theme="light"] .form-group input, body[data-theme="light"] .form-group textarea, body[data-theme="light"] .form-group select { background: rgba(255,255,255,0.8); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--theme-accent); box-shadow: 0 0 12px rgba(229,57,53,0.3); }
 
-        .btn { display: inline-block; background: transparent; color: var(--theme-accent); border: 1px solid var(--theme-accent); padding: 11px 22px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.2s; border-radius: 8px; }
-        .btn:hover { background: var(--theme-accent); color: #fff; transform: translateY(-1px); }
+        .btn { display: inline-block; background: transparent; color: var(--theme-accent); border: 1px solid var(--theme-accent); padding: 11px 22px; font-weight: 600; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.2s; border-radius: 8px; text-decoration: none; }
+        .btn:hover { background: var(--theme-accent); color: #fff; transform: translateY(-1px); box-shadow: 0 0 20px rgba(229,57,53,0.4); }
         .btn-pink { color: var(--theme-accent-2); border-color: var(--theme-accent-2); }
         .btn-pink:hover { background: var(--theme-accent-2); color: #fff; }
         .btn-red { color: #e53935; border-color: #e53935; }
@@ -62,13 +100,14 @@
 
         .app { display: none; }
         .app.active { display: block; }
-        .top-bar { position: sticky; top: 0; z-index: 100; background: var(--bg-panel); border-bottom: 2px solid var(--theme-accent); padding: 14px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .top-bar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); border-bottom: 2px solid var(--theme-accent); padding: 14px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; box-shadow: 0 4px 30px rgba(229,57,53,0.2); }
+        body[data-theme="light"] .top-bar { background: rgba(255,255,255,0.95); }
         .top-bar.collapsed { padding: 0 24px; max-height: 0; overflow: hidden; opacity: 0; }
-        .top-brand { font-size: 1.2rem; font-weight: 900; letter-spacing: 6px; color: #fff; }
+        .top-brand { font-size: 1.3rem; font-weight: 900; letter-spacing: 8px; color: #fff; text-shadow: 0 0 20px rgba(229,57,53,0.5); }
         body[data-theme="light"] .top-brand { color: #000; }
-        .top-brand span { color: var(--theme-accent); }
         .top-divider { width: 1px; height: 24px; background: var(--border); }
-        .tarkov-display { display: flex; align-items: center; gap: 16px; background: var(--bg-panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 8px 18px; font-family: 'Share Tech Mono', monospace; }
+        .tarkov-display { display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 10px; padding: 8px 18px; font-family: 'Share Tech Mono', monospace; }
+        
         .tarkov-display .display-item { display: flex; flex-direction: column; align-items: center; padding: 0 10px; }
         .tarkov-display .display-item .d-label { font-size: 0.55rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
         .tarkov-display .display-item .d-value { font-size: 1rem; font-weight: 700; color: var(--theme-accent); }
@@ -76,62 +115,63 @@
         .tarkov-display .display-item .d-value.red { color: #e53935; }
         .tarkov-display .display-item .d-value.yellow { color: #ffaa00; }
         .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; align-items: center; }
-        .action-btn { display: flex; align-items: center; gap: 8px; background: var(--bg-panel-2); border: 1px solid var(--border); color: var(--text); padding: 9px 16px; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 8px; transition: 0.2s; white-space: nowrap; }
+        .action-btn { display: flex; align-items: center; gap: 8px; background: rgba(26, 26, 26, 0.8); border: 1px solid var(--border); color: var(--text); padding: 9px 16px; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 8px; transition: 0.2s; white-space: nowrap; }
         .action-btn:hover { border-color: var(--theme-accent); color: var(--theme-accent); }
-        .action-btn.panic { background: rgba(229, 57, 53, 0.1); border-color: #e53935; color: #e53935; animation: panicPulseRed 1.5s infinite; }
-        @keyframes panicPulseRed { 0%, 100% { box-shadow: 0 0 10px rgba(229,57,53,0.3); } 50% { box-shadow: 0 0 25px rgba(229,57,53,0.8); } }
-        .action-btn.shift { background: rgba(229, 57, 53, 0.1); border-color: #e53935; color: #e53935; animation: shiftPulseRed 2.5s infinite; }
-        @keyframes shiftPulseRed { 0%, 100% { box-shadow: 0 0 10px rgba(229,57,53,0.3); } 50% { box-shadow: 0 0 22px rgba(229,57,53,0.7); } }
+        .action-btn.panic { background: rgba(229, 57, 53, 0.15); border-color: #e53935; color: #e53935; animation: panicPulseRed 1.5s infinite; }
+        @keyframes panicPulseRed { 0%, 100% { box-shadow: 0 0 10px rgba(229,57,53,0.4); } 50% { box-shadow: 0 0 30px rgba(229,57,53,1); } }
+        .action-btn.shift { background: rgba(229, 57, 53, 0.15); border-color: #e53935; color: #e53935; animation: shiftPulseRed 2.5s infinite; }
+        @keyframes shiftPulseRed { 0%, 100% { box-shadow: 0 0 10px rgba(229,57,53,0.4); } 50% { box-shadow: 0 0 25px rgba(229,57,53,0.9); } }
         .action-btn.shift.on { background: #e53935; color: #fff; animation: none; }
         .action-btn.weapon { background: rgba(255, 136, 0, 0.1); border-color: #ff8800; color: #ff8800; }
-        .action-btn.settings { background: rgba(198, 40, 40, 0.1); border-color: #c62828; color: #c62828; }
-        .top-profile { display: flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; background: var(--bg-panel-2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .action-btn.settings { background: rgba(198, 40, 40, 0.15); border-color: #c62828; color: #c62828; }
+        .top-profile { display: flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; background: rgba(26, 26, 26, 0.8); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: 0.2s; }
         .top-profile:hover { border-color: var(--theme-accent); }
-        .top-profile .tp-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--theme-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #fff; background-size: cover; background-position: center; flex-shrink: 0; }
+        .top-profile .tp-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--theme-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #fff; background-size: cover; background-position: center; flex-shrink: 0; }
         .top-profile .tp-info { display: flex; flex-direction: column; font-size: 0.7rem; line-height: 1.3; }
         .top-profile .tp-info .tp-name { color: var(--text); font-weight: 700; font-size: 0.75rem; }
         .top-profile .tp-info .tp-rank { color: var(--theme-accent); font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; }
         .top-profile .tp-tags { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
 
-        .collapse-bar { position: sticky; top: 0; z-index: 99; background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 4px 0; display: flex; justify-content: center; }
+        .collapse-bar { position: sticky; top: 0; z-index: 99; background: rgba(10,10,10,0.9); border-bottom: 1px solid var(--border); padding: 4px 0; display: flex; justify-content: center; }
         .collapse-bar button { background: transparent; border: none; color: var(--theme-accent); cursor: pointer; padding: 4px 20px; font-size: 0.9rem; opacity: 0.7; }
 
         .main-layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 70px); }
-        .sidebar { background: var(--bg-panel); border-right: 1px solid var(--border); position: sticky; top: 0; max-height: 100vh; overflow-y: auto; display: flex; flex-direction: column; padding-top: 12px; }
+        .sidebar { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-right: 1px solid var(--border); position: sticky; top: 0; max-height: 100vh; overflow-y: auto; display: flex; flex-direction: column; padding-top: 12px; }
+        body[data-theme="light"] .sidebar { background: rgba(255,255,255,0.95); }
         .sidebar-content { flex: 1; padding: 8px 0 0; }
         .sidebar-title { font-size: 0.6rem; font-weight: 700; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; padding: 12px 20px 6px; }
         .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 11px 16px; margin: 2px 10px; color: var(--text-dim); font-weight: 500; font-size: 0.85rem; cursor: pointer; border-radius: 8px; transition: 0.15s; }
         .sidebar-item:hover { background: rgba(229, 57, 53, 0.08); color: var(--text); }
-        .sidebar-item.active { background: rgba(229, 57, 53, 0.15); color: var(--theme-accent); font-weight: 600; }
+        .sidebar-item.active { background: rgba(229, 57, 53, 0.18); color: var(--theme-accent); font-weight: 600; }
         .sidebar-item i { width: 18px; text-align: center; font-size: 0.9rem; }
         .sidebar-item .badge-count { margin-left: auto; background: var(--theme-accent); color: #fff; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
         .sidebar-item .badge-count.hidden { display: none; }
 
         .announce-box { border-top: 1px solid var(--border); padding: 14px 16px; }
-        .announce-title { font-size: 0.6rem; font-weight: 700; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .announce-title { font-size: 0.6rem; font-weight: 700; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .announce-title i { color: var(--theme-accent); }
-        #announceFormBox textarea { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.75rem; resize: vertical; }
+        #announceFormBox textarea { width: 100%; padding: 10px; background: rgba(10,10,10,0.6); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.75rem; resize: vertical; }
         .announce-send { width: 100%; margin-top: 6px; background: var(--theme-accent); border: none; color: #fff; padding: 8px; font-weight: 700; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 6px; }
         #announceList { max-height: 180px; overflow-y: auto; font-size: 0.7rem; margin-top: 8px; }
-        .announce-item { background: var(--bg-panel-2); border-left: 2px solid var(--theme-accent); padding: 8px; margin-bottom: 6px; border-radius: 4px; }
+        .announce-item { background: rgba(26, 26, 26, 0.7); border-left: 2px solid var(--theme-accent); padding: 8px; margin-bottom: 6px; border-radius: 4px; }
         .announce-item .announce-meta { font-size: 0.6rem; color: var(--text-dim); }
         .announce-item .announce-author { color: var(--theme-accent); font-weight: 700; }
         .announce-item .announce-text { color: var(--text); font-size: 0.7rem; margin-top: 2px; }
         .announce-empty { padding: 10px 0; text-align: center; opacity: 0.4; font-size: 0.7rem; }
-      
+
         .content { padding: 28px 32px; }
         .content-header { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
         .content-header h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; color: var(--text); margin-bottom: 4px; }
         .content-header .breadcrumb { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--text-dim); letter-spacing: 1px; }
         .content-header .breadcrumb span { color: var(--theme-accent); }
 
-        .panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+        .panel { background: var(--bg-panel); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .panel-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .panel-title i { color: var(--theme-accent); }
 
         .operator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
         .operator-tile { background: var(--bg-panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; transition: 0.2s; }
-        .operator-tile:hover { border-color: var(--theme-accent); }
+        .operator-tile:hover { border-color: var(--theme-accent); box-shadow: 0 0 20px rgba(229,57,53,0.15); }
         .operator-tile .op-label { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
         .operator-tile .op-value { font-size: 1rem; font-weight: 700; }
         .operator-tile .op-value.cyan { color: var(--theme-accent); }
@@ -140,7 +180,7 @@
         .operator-tile .op-value.red { color: #e53935; }
 
         .user-tag { display: inline-flex; padding: 3px 10px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border: 1px solid; }
-        .user-tag.admin { background: rgba(198, 40, 40, 0.15); color: #c62828; border-color: #c62828; }
+        .user-tag.admin { background: rgba(198, 40, 40, 0.2); color: #c62828; border-color: #c62828; }
         .user-tag.management, .user-tag.cyan { background: rgba(229, 57, 53, 0.15); color: #e53935; border-color: #e53935; }
         .user-tag.staff, .user-tag.green { background: rgba(102, 187, 106, 0.15); color: #66bb6a; border-color: #66bb6a; }
         .user-tag.pink { background: rgba(255, 23, 68, 0.15); color: #ff1744; border-color: #ff1744; }
@@ -156,21 +196,21 @@
         .tag-info .tag-desc { font-size: 0.7rem; color: var(--text-dim); }
         .tag-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-        .tag-checkbox-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }
+        .tag-checkbox-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: rgba(10,10,10,0.5); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }
         .tag-checkbox-row:hover { border-color: var(--theme-accent); }
         .tag-checkbox-row input { width: auto !important; cursor: pointer; }
 
         .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .data-table th { text-align: left; padding: 12px; background: var(--bg-dark); color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.65rem; border-bottom: 1px solid var(--border); font-weight: 700; }
+        .data-table th { text-align: left; padding: 12px; background: rgba(10,10,10,0.5); color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.65rem; border-bottom: 1px solid var(--border); font-weight: 700; }
         .data-table td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--text); }
-        .data-table tr:hover td { background: rgba(229, 57, 53, 0.03); }
+        .data-table tr:hover td { background: rgba(229, 57, 53, 0.05); }
 
         .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .badge-danger { background: rgba(229, 57, 53, 0.2); color: #e53935; border: 1px solid #e53935; }
         .badge-warn { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid #ffaa00; }
         .badge-safe { background: rgba(102, 187, 106, 0.15); color: #66bb6a; border: 1px solid #66bb6a; }
         .badge-info { background: rgba(229, 57, 53, 0.15); color: #e53935; border: 1px solid #e53935; }
-        .badge-admin { background: rgba(198, 40, 40, 0.2); color: #c62828; border: 1px solid #c62828; }
+        .badge-admin { background: rgba(198, 40, 40, 0.25); color: #c62828; border: 1px solid #c62828; }
         .badge-director { background: rgba(255, 136, 0, 0.2); color: #ff8800; border: 1px solid #ff8800; }
 
         .employee-row { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--bg-panel-2); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; flex-wrap: wrap; }
@@ -191,22 +231,6 @@
         .role-info .role-perms { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
         .role-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-        .chat-msg { display: flex; gap: 12px; font-size: 0.85rem; }
-        .chat-msg .cm-content { flex: 1; min-width: 0; background: var(--bg-panel-2); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); position: relative; }
-        .msg-admin-actions { position: absolute; top: 8px; right: 10px; display: none; gap: 6px; }
-        .chat-msg:hover .msg-admin-actions { display: flex; }
-        .msg-admin-actions button { background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-dim); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 0.7rem; }
-        .msg-admin-actions button:hover { background: var(--theme-accent); color: #fff; border-color: var(--theme-accent); }
-        .msg-admin-actions button.del:hover { background: #e53935; }
-        .chat-msg .cm-avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #fff; background: var(--theme-accent); background-size: cover; background-position: center; }
-        .chat-msg .cm-author { font-size: 0.75rem; font-weight: 700; color: var(--theme-accent); margin-bottom: 4px; }
-        .chat-msg .cm-author .cm-rank { color: var(--text-dim); font-size: 0.65rem; font-weight: 500; }
-        .chat-msg .cm-text { color: var(--text); word-wrap: break-word; }
-        .chat-msg .cm-time { font-size: 0.65rem; color: var(--text-dim); margin-top: 6px; }
-        .chat-msg.mine { flex-direction: row-reverse; }
-        .chat-msg.mine .cm-content { background: rgba(229, 57, 53, 0.05); border-color: rgba(229, 57, 53, 0.2); }
-        .chat-msg.mine .cm-author { color: var(--theme-accent); }
-
         .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 14px; font-size: 0.8rem; border-left: 3px solid; }
         .alert-success { background: rgba(102, 187, 106, 0.1); color: #66bb6a; border-color: #66bb6a; }
         .alert-danger { background: rgba(229, 57, 53, 0.1); color: #e53935; border-color: #e53935; }
@@ -217,18 +241,18 @@
         .wanted-modal-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         @media (max-width: 600px) { .wanted-modal-fields { grid-template-columns: 1fr; } }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 9997; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 32px; max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.6); max-height: 90vh; overflow-y: auto; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9997; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 32px; max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.8); max-height: 90vh; overflow-y: auto; backdrop-filter: blur(20px); }
         .modal h3 { font-size: 1.1rem; font-weight: 800; color: var(--text); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
         .modal h3 i { color: var(--theme-accent); }
 
-        .panic-overlay { position: fixed; inset: 0; background: rgba(229, 57, 53, 0.15); backdrop-filter: blur(4px); z-index: 9998; display: flex; align-items: center; justify-content: center; }
-        .panic-modal { background: #0a0a0a; border: 3px solid #e53935; border-radius: 12px; padding: 40px 48px; max-width: 500px; text-align: center; }
+        .panic-overlay { position: fixed; inset: 0; background: rgba(229, 57, 53, 0.2); backdrop-filter: blur(8px); z-index: 9998; display: flex; align-items: center; justify-content: center; }
+        .panic-modal { background: #0a0a0a; border: 3px solid #e53935; border-radius: 16px; padding: 40px 48px; max-width: 500px; text-align: center; box-shadow: 0 0 60px rgba(229,57,53,0.6); }
         .panic-modal h2 { font-size: 2rem; font-weight: 900; color: #e53935; margin-bottom: 12px; letter-spacing: 4px; }
         .panic-modal p { color: var(--text); font-size: 0.9rem; margin-bottom: 24px; }
 
         .toast-container { position: fixed; top: 90px; right: 20px; z-index: 10001; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--bg-panel); border: 1px solid var(--border); border-left: 4px solid var(--theme-accent); border-radius: 8px; padding: 14px 20px; font-size: 0.8rem; color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.5); min-width: 280px; max-width: 400px; pointer-events: auto; animation: toastIn 0.3s ease, toastOut 0.3s ease 3.7s forwards; display: flex; align-items: center; gap: 12px; }
+        .toast { background: rgba(18, 18, 18, 0.95); border: 1px solid var(--border); border-left: 4px solid var(--theme-accent); border-radius: 8px; padding: 14px 20px; font-size: 0.8rem; color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.6); min-width: 280px; max-width: 400px; pointer-events: auto; animation: toastIn 0.3s ease, toastOut 0.3s ease 3.7s forwards; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(20px); }
         .toast.success { border-left-color: #66bb6a; }
         .toast.danger { border-left-color: #e53935; }
         .toast.warning { border-left-color: #ffaa00; }
@@ -248,21 +272,6 @@
         .add-btn.purple { border-color: #c62828; color: #c62828; }
         .add-btn.red { border-color: #e53935; color: #e53935; }
 
-        .chat-container { display: flex; flex-direction: column; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; height: calc(100vh - 380px); min-height: 380px; }
-        .chat-tabs { display: flex; background: var(--bg-dark); border-bottom: 1px solid var(--border); }
-        .chat-tab { flex: 1; padding: 14px 16px; background: transparent; border: none; color: var(--text-dim); font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
-        .chat-tab:hover { color: var(--text); }
-        .chat-tab.active { color: var(--theme-accent); border-bottom-color: var(--theme-accent); background: rgba(229, 57, 53, 0.05); }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .chat-input-area { display: flex; gap: 10px; padding: 14px; border-top: 1px solid var(--border); background: var(--bg-dark); }
-        .chat-input-area input { flex: 1; background: var(--bg-panel-2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; }
-        .chat-input-area input:focus { outline: none; border-color: var(--theme-accent); }
-        .chat-input-area button { background: var(--theme-accent); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; }
-        .mark-read-btn { display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px; background: transparent; border: 1px solid var(--theme-accent); color: var(--theme-accent); font-weight: 700; font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-radius: 8px; }
-        .mark-read-btn:hover { background: var(--theme-accent); color: #fff; }
-        .chat-header-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
-        .chat-info { font-size: 0.75rem; color: var(--text-dim); }
-
         .log-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--bg-panel-2); border: 1px solid var(--border); border-left: 3px solid var(--theme-accent); border-radius: 10px; margin-bottom: 8px; flex-wrap: wrap; }
         .log-item.read { opacity: 0.5; }
         .log-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--theme-accent); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.9rem; flex-shrink: 0; }
@@ -271,46 +280,39 @@
         .log-info .log-meta { color: var(--text-dim); font-size: 0.7rem; margin-top: 2px; }
         .log-actions { display: flex; gap: 6px; }
 
-        .robocop-chat { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: calc(100vh - 340px); min-height: 420px; }
-        .robocop-msg { display: flex; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-        .robocop-msg.bot { background: rgba(229, 57, 53, 0.03); }
-        .robocop-msg.user { flex-direction: row-reverse; }
-        .rc-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #fff; flex-shrink: 0; background: var(--theme-accent); }
-        .rc-content { flex: 1; min-width: 0; }
-        .robocop-msg.user .rc-content { text-align: right; }
-        .rc-author { font-size: 0.75rem; font-weight: 700; color: var(--theme-accent); margin-bottom: 4px; }
-        .rc-text { color: var(--text); font-size: 0.88rem; white-space: pre-wrap; word-wrap: break-word; }
-        .rc-time { font-size: 0.65rem; color: var(--text-dim); margin-top: 6px; }
-        .rc-input-area { display: flex; gap: 10px; padding: 14px; border-top: 1px solid var(--border); background: var(--bg-dark); }
-        .rc-input-area input { flex: 1; background: var(--bg-panel-2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; }
-        .rc-input-area input:focus { outline: none; border-color: var(--theme-accent); }
-        .rc-input-area button { background: var(--theme-accent); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
-        .rc-quick { padding: 10px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
-        .rc-quick button { font-size: 0.65rem; padding: 6px 12px; background: transparent; border: 1px solid var(--border); color: var(--text-dim); border-radius: 6px; cursor: pointer; font-weight: 600; text-transform: uppercase; }
-        .rc-quick button:hover { border-color: var(--theme-accent); color: var(--theme-accent); }
-        .rc-quick button.secret { background: rgba(229, 57, 53, 0.1); border-color: var(--theme-accent); color: var(--theme-accent); }
+        .dispatch-chat { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; height: calc(100vh - 340px); min-height: 420px; }
+        .dispatch-msg { display: flex; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+        .dispatch-msg.bot { background: rgba(229, 57, 53, 0.03); }
+        .dispatch-msg.user { flex-direction: row-reverse; }
+        .dc-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #fff; flex-shrink: 0; background: var(--theme-accent); }
+        .dc-content { flex: 1; min-width: 0; }
+        .dispatch-msg.user .dc-content { text-align: right; }
+        .dc-author { font-size: 0.75rem; font-weight: 700; color: var(--theme-accent); margin-bottom: 4px; }
+        .dc-text { color: var(--text); font-size: 0.88rem; white-space: pre-wrap; word-wrap: break-word; }
+        .dc-time { font-size: 0.65rem; color: var(--text-dim); margin-top: 6px; }
+        .dc-input-area { display: flex; gap: 10px; padding: 14px; border-top: 1px solid var(--border); background: rgba(10,10,10,0.5); }
+        .dc-input-area input { flex: 1; background: var(--bg-panel-2); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; }
+        .dc-input-area input:focus { outline: none; border-color: var(--theme-accent); }
+        .dc-input-area button { background: var(--theme-accent); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
+        .dc-quick { padding: 10px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+        .dc-quick button { font-size: 0.65rem; padding: 6px 12px; background: transparent; border: 1px solid var(--border); color: var(--text-dim); border-radius: 6px; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+        .dc-quick button:hover { border-color: var(--theme-accent); color: var(--theme-accent); }
+        .dc-quick button.secret { background: rgba(229, 57, 53, 0.1); border-color: var(--theme-accent); color: var(--theme-accent); }
 
         .site-off-overlay { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 30px; text-align: center; }
-        .site-off-overlay h1 { font-size: 3rem; font-weight: 900; color: #e53935; letter-spacing: 8px; margin-bottom: 20px; }
+        .site-off-overlay h1 { font-size: 3rem; font-weight: 900; color: #e53935; letter-spacing: 8px; margin-bottom: 20px; text-shadow: 0 0 40px rgba(229,57,53,0.8); }
         .site-off-overlay p { color: #888; font-size: 1rem; margin-bottom: 10px; line-height: 1.8; }
         .site-off-overlay .offline-badge { color: #e53935; font-size: 0.8rem; letter-spacing: 4px; padding: 8px 20px; border: 2px solid #e53935; border-radius: 6px; margin-top: 20px; }
-        .site-off-overlay .cyber-shield { font-size: 5rem; color: #e53935; margin-bottom: 20px; }
+        .site-off-overlay .cyber-shield { font-size: 5rem; color: #e53935; margin-bottom: 20px; text-shadow: 0 0 40px rgba(229,57,53,0.8); }
         .site-off-overlay .cyber-sub { color: #e53935; font-size: 0.85rem; letter-spacing: 6px; margin-bottom: 30px; opacity: 0.8; }
         .site-status-on { display: flex; align-items: center; gap: 12px; padding: 20px; background: rgba(102, 187, 106, 0.08); border: 1px solid #66bb6a; border-radius: 10px; color: #66bb6a; margin-bottom: 16px; }
         .site-status-off { display: flex; align-items: center; gap: 12px; padding: 20px; background: rgba(229, 57, 53, 0.08); border: 1px solid #e53935; border-radius: 10px; color: #e53935; margin-bottom: 16px; }
         .site-status-on i, .site-status-off i { font-size: 1.5rem; }
 
-        .custom-context-menu { position: fixed; z-index: 100000; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); padding: 6px 0; min-width: 210px; }
-        .custom-context-menu .ctx-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; color: var(--text); font-size: 0.85rem; cursor: pointer; }
-        .custom-context-menu .ctx-item:hover { background: rgba(229, 57, 53, 0.1); color: var(--theme-accent); }
-        .custom-context-menu .ctx-item.danger:hover { background: rgba(229, 57, 53, 0.15); color: #e53935; }
-        .custom-context-menu .ctx-sep { height: 1px; background: var(--border); margin: 5px 8px; }
-        .custom-context-menu .ctx-item.disabled { opacity: 0.3; cursor: not-allowed; }
-
         .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 16px; }
         .theme-item { background: var(--bg-panel-2); border: 2px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
         .theme-item:hover { transform: translateY(-3px); }
-        .theme-item.active { border-color: var(--theme-accent); }
+        .theme-item.active { border-color: var(--theme-accent); box-shadow: 0 0 20px rgba(229,57,53,0.3); }
         .theme-item .theme-preview { width: 56px; height: 56px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #fff; }
         .theme-item .theme-name { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text); margin-bottom: 4px; }
         .theme-item .theme-desc { font-size: 0.65rem; color: var(--text-dim); }
@@ -319,6 +321,7 @@
             .main-layout { grid-template-columns: 1fr; }
             .sidebar { position: relative; height: auto; max-height: none; }
             .top-actions { width: 100%; margin-left: 0; }
+            .content { padding: 16px; }
         }
     </style>
 </head>
@@ -328,9 +331,9 @@
 <!-- ЗАГЛУШКА -->
 <div id="siteOffOverlay" class="hidden">
     <div class="site-off-overlay">
-        <div class="cyber-shield"><i class="fas fa-shield-halved"></i></div>
+        <div class="cyber-shield"><i class="fas fa-fire"></i></div>
         <h1>ДОСТУП ЗАБЛОКИРОВАН</h1>
-        <div class="cyber-sub">СЛУЖБА БЕЗОПАСНОСТИ · ДФД</div>
+        <div class="cyber-sub">CENTRAL FIRE DEPARTMENT</div>
         <p>Доступ к терминалу временно приостановлен администрацией.</p>
         <div class="offline-badge">● СИСТЕМА НА КАРАНТИНЕ ●</div>
     </div>
@@ -339,8 +342,8 @@
 <!-- АВТОРИЗАЦИЯ -->
 <div class="auth-screen" id="authScreen">
     <div class="auth-box">
-        <div class="auth-logo">ДФД</div>
-        <div class="auth-sub">Департамент Федеральной Защиты</div>
+        <div class="auth-logo">CFD</div>
+        <div class="auth-sub">Central Fire Department</div>
         <div class="auth-tabs">
             <button id="tabLogin" class="active">Вход</button>
             <button id="tabRegister">Регистрация</button>
@@ -375,7 +378,7 @@
 <!-- ОСНОВНОЕ -->
 <div class="app" id="app">
     <div class="top-bar" id="topBar">
-        <div class="top-brand" id="topBrand">ДФД</div>
+        <div class="top-brand" id="topBrand">CFD</div>
         <div class="top-divider"></div>
         <div class="tarkov-display">
             <div class="display-item"><span class="d-label">LOCAL</span><span class="d-value yellow" id="localClock">--:--:--</span></div>
@@ -386,8 +389,8 @@
         </div>
         <div class="top-actions">
             <button class="action-btn shift" id="shiftBtn" onclick="toggleShift()"><i class="fas fa-user-clock"></i> Заступить на смену</button>
-            <button class="action-btn weapon" onclick="openWeaponModal()"><i class="fas fa-crosshairs"></i> Оружие</button>
-            <button class="action-btn panic" onclick="triggerPanic()"><i class="fas fa-exclamation-triangle"></i> ПАНИКА</button>
+            <button class="action-btn weapon" onclick="openWeaponModal()"><i class="fas fa-fire-extinguisher"></i> Снаряжение</button>
+            <button class="action-btn panic" onclick="triggerPanic()"><i class="fas fa-exclamation-triangle"></i> ТРЕВОГА</button>
             <button class="action-btn settings" onclick="openSettingsModal()"><i class="fas fa-cog"></i> Настройки</button>
             <div class="top-profile" onclick="openMyProfileModal()" title="Профиль">
                 <div class="tp-avatar" id="topAvatar">?</div>
@@ -410,21 +413,21 @@
             <div class="sidebar-content">
                 <div class="sidebar-title">// Терминал</div>
                 <div class="sidebar-item active" data-section="dashboard" onclick="switchSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Главная</div>
-                <div class="sidebar-item" data-section="wanted" onclick="switchSection('wanted')"><i class="fas fa-search"></i> База розыска</div>
-                <div class="sidebar-item" data-section="weapons" onclick="switchSection('weapons')"><i class="fas fa-gun"></i> Реестр оружия</div>
+                <div class="sidebar-item" data-section="wanted" onclick="switchSection('wanted')"><i class="fas fa-fire"></i> Вызовы</div>
+                <div class="sidebar-item" data-section="weapons" onclick="switchSection('weapons')"><i class="fas fa-truck"></i> Техника</div>
                 <div class="sidebar-item" data-section="functionality" onclick="switchSection('functionality')">
                     <i class="fas fa-bell"></i> Функционал
                     <span class="badge-count hidden" id="funcBadgeSidebar">0</span>
                 </div>
 
-                <div class="sidebar-title" id="supervisorSection" style="display:none;">// Супервайзер</div>
-                <div class="sidebar-item supervisor-only hidden" data-section="reports" onclick="switchSection('reports')"><i class="fas fa-file-alt"></i> Отчёты</div>
-                <div class="sidebar-item supervisor-only hidden" data-section="employees" onclick="switchSection('employees')"><i class="fas fa-users"></i> Сотрудники</div>
-                <div class="sidebar-item supervisor-only hidden" data-section="robocop" onclick="switchSection('robocop')"><i class="fas fa-robot"></i> ИИ-Помощник</div>
+                <div class="sidebar-title" id="supervisorSection" style="display:none;">// Начальник смены</div>
+                <div class="sidebar-item supervisor-only hidden" data-section="reports" onclick="switchSection('reports')"><i class="fas fa-file-alt"></i> Рапорты</div>
+                <div class="sidebar-item admin-only hidden" data-section="employees" onclick="switchSection('employees')"><i class="fas fa-users"></i> База данных</div>
+                <div class="sidebar-item supervisor-only hidden" data-section="dispatch" onclick="switchSection('dispatch')"><i class="fas fa-headset"></i> Диспетчер 911</div>
 
-                <div class="sidebar-title" id="adminSectionTitle" style="display:none;">// Админ</div>
-                <div class="sidebar-item admin-only hidden" data-section="roles" onclick="switchSection('roles')"><i class="fas fa-user-shield"></i> Управление ролями</div>
-                <div class="sidebar-item admin-only hidden" data-section="tags" onclick="switchSection('tags')"><i class="fas fa-tags"></i> Теги</div>
+                <div class="sidebar-title" id="adminSectionTitle" style="display:none;">// Начальник части</div>
+                <div class="sidebar-item admin-only hidden" data-section="roles" onclick="switchSection('roles')"><i class="fas fa-user-shield"></i> Звания</div>
+                <div class="sidebar-item admin-only hidden" data-section="tags" onclick="switchSection('tags')"><i class="fas fa-tags"></i> Значки</div>
                 <div class="sidebar-item admin-only hidden" data-section="adminlogs" onclick="switchSection('adminlogs')"><i class="fas fa-terminal"></i> Админ-панель</div>
                 <div class="sidebar-item admin-only hidden" data-section="site" onclick="switchSection('site')"><i class="fas fa-globe"></i> Сайт</div>
                 <div class="sidebar-item" data-section="settings" onclick="switchSection('settings')"><i class="fas fa-palette"></i> Настройки дизайна</div>
@@ -455,16 +458,16 @@
 <!-- МОДАЛКИ -->
 <div class="modal-overlay hidden" id="weaponModal">
     <div class="modal">
-        <h3><i class="fas fa-crosshairs"></i> Применение оружия</h3>
+        <h3><i class="fas fa-fire-extinguisher"></i> Применение снаряжения</h3>
         <form id="weaponForm">
-            <div class="form-group"><label for="weaponType">Тип оружия</label>
+            <div class="form-group"><label for="weaponType">Тип снаряжения</label>
                 <select id="weaponType">
-                    <option value="Табельный пистолет">Табельный пистолет</option>
-                    <option value="SMG">SMG</option>
-                    <option value="Дробовик">Дробовик</option>
-                    <option value="Штурмовая винтовка">Штурмовая винтовка</option>
-                    <option value="Снайперская винтовка">Снайперская винтовка</option>
-                    <option value="Электрошокер">Электрошокер</option>
+                    <option value="Огнетушитель">Огнетушитель</option>
+                    <option value="Пожарный рукав">Пожарный рукав</option>
+                    <option value="Гидрант">Гидрант</option>
+                    <option value="Пожарная лестница">Пожарная лестница</option>
+                    <option value="Кислородный баллон">Кислородный баллон</option>
+                    <option value="Аптечка">Аптечка</option>
                 </select>
             </div>
             <div class="form-group"><label for="weaponReason">Причина применения</label>
@@ -481,26 +484,25 @@
 
 <div class="modal-overlay hidden" id="addWeaponModal">
     <div class="modal">
-        <h3><i class="fas fa-plus"></i> Добавить оружие</h3>
+        <h3><i class="fas fa-plus"></i> Добавить технику</h3>
         <form id="addWeaponForm">
             <div class="form-group"><label for="addWName">Название</label><input type="text" id="addWName" required /></div>
             <div class="form-group"><label for="addWType">Тип</label>
                 <select id="addWType">
-                    <option value="Пистолет">Пистолет</option>
-                    <option value="SMG">SMG</option>
-                    <option value="Дробовик">Дробовик</option>
-                    <option value="Штурмовая винтовка">Штурмовая винтовка</option>
-                    <option value="Снайперская винтовка">Снайперская винтовка</option>
-                    <option value="Электрошокер">Электрошокер</option>
+                    <option value="Пожарная машина">Пожарная машина</option>
+                    <option value="Скорая помощь">Скорая помощь</option>
+                    <option value="Автоцистерна">Автоцистерна</option>
+                    <option value="Автолестница">Автолестница</option>
+                    <option value="Спасательный автомобиль">Спасательный автомобиль</option>
                 </select>
             </div>
-            <div class="form-group"><label for="addWAmmo">Калибр</label><input type="text" id="addWAmmo" /></div>
+            <div class="form-group"><label for="addWAmmo">Бортовой номер</label><input type="text" id="addWAmmo" /></div>
             <div class="form-group"><label for="addWStatus">Статус</label>
                 <select id="addWStatus">
-                    <option value="В арсенале">В арсенале</option>
-                    <option value="У оператора">У оператора</option>
+                    <option value="В гараже">В гараже</option>
+                    <option value="На выезде">На выезде</option>
                     <option value="На ремонте">На ремонте</option>
-                    <option value="Списано">Списано</option>
+                    <option value="Списана">Списана</option>
                 </select>
             </div>
             <div style="display:flex;gap:10px;">
@@ -513,26 +515,27 @@
 
 <div class="modal-overlay hidden" id="wantedModal">
     <div class="modal" style="border-color: #e53935;">
-        <h3 style="color: #e53935;" id="wantedModalTitle"><i class="fas fa-search"></i> Добавить в розыск</h3>
+        <h3 style="color: #e53935;" id="wantedModalTitle"><i class="fas fa-fire"></i> Добавить вызов</h3>
         <form id="wantedForm">
             <input type="hidden" id="wantedEditId" />
             <div class="wanted-modal-fields">
-                <div class="form-group"><label for="wantedId">ID</label><input type="text" id="wantedId" placeholder="DFD-009" required /></div>
-                <div class="form-group"><label for="wantedName">Имя</label><input type="text" id="wantedName" placeholder="Имя" required /></div>
+                <div class="form-group"><label for="wantedId">ID вызова</label><input type="text" id="wantedId" placeholder="CFD-009" required /></div>
+                <div class="form-group"><label for="wantedName">Адрес</label><input type="text" id="wantedName" placeholder="Улица, дом" required /></div>
             </div>
             <div class="wanted-modal-fields">
-                <div class="form-group"><label for="wantedStatus">Статус</label>
+                <div class="form-group"><label for="wantedStatus">Тип вызова</label>
                     <select id="wantedStatus">
-                        <option value="Розыск">Розыск</option>
-                        <option value="Опасен">Опасен</option>
-                        <option value="Особо опасен">Особо опасен</option>
-                        <option value="Наблюдение">Наблюдение</option>
+                        <option value="Пожар">Пожар</option>
+                        <option value="Задымление">Задымление</option>
+                        <option value="ДТП">ДТП</option>
+                        <option value="Спасение">Спасение</option>
+                        <option value="Ложный вызов">Ложный вызов</option>
                     </select>
                 </div>
-                <div class="form-group"><label for="wantedReward">Награда</label><input type="text" id="wantedReward" placeholder="25,000 ₽" /></div>
+                <div class="form-group"><label for="wantedReward">Приоритет</label><input type="text" id="wantedReward" placeholder="Высокий" /></div>
             </div>
-            <div class="form-group"><label for="wantedCrime">Преступление</label><input type="text" id="wantedCrime" placeholder="Описание..." required /></div>
-            <div class="form-group"><label for="wantedLocation">Локация</label><input type="text" id="wantedLocation" placeholder="Город" /></div>
+            <div class="form-group"><label for="wantedCrime">Описание</label><input type="text" id="wantedCrime" placeholder="Что произошло..." required /></div>
+            <div class="form-group"><label for="wantedLocation">Район</label><input type="text" id="wantedLocation" placeholder="Центральный" /></div>
             <div style="display:flex; gap:10px;">
                 <button type="submit" class="btn btn-red" style="flex:1;">Сохранить</button>
                 <button type="button" class="btn" style="flex:1;" onclick="closeWantedModal()">Отмена</button>
@@ -543,10 +546,10 @@
 
 <div class="modal-overlay hidden" id="roleModal">
     <div class="modal" style="border-color: #c62828;">
-        <h3 style="color: #c62828;" id="roleModalTitle"><i class="fas fa-user-shield"></i> Создать роль</h3>
+        <h3 style="color: #c62828;" id="roleModalTitle"><i class="fas fa-user-shield"></i> Создать звание</h3>
         <form id="roleForm">
             <input type="hidden" id="roleEditId" />
-            <div class="form-group"><label for="roleName">Название роли</label><input type="text" id="roleName" required /></div>
+            <div class="form-group"><label for="roleName">Название звания</label><input type="text" id="roleName" required /></div>
             <div class="form-group"><label for="roleColor">Цвет</label>
                 <select id="roleColor">
                     <option value="--neon-cyan">Красный</option>
@@ -559,13 +562,13 @@
             </div>
             <div class="form-group"><label>Права доступа</label>
                 <div style="display:flex; flex-direction:column; gap:6px; font-size:0.8rem;">
-                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permSupervisor" style="width:auto;" /> Видеть отчёты</label>
-                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permManageEmp" style="width:auto;" /> Управлять сотрудниками</label>
-                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permManageRoles" style="width:auto;" /> Управлять ролями</label>
+                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permSupervisor" style="width:auto;" /> Видеть рапорты</label>
+                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permManageEmp" style="width:auto;" /> Управлять личным составом</label>
+                    <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permManageRoles" style="width:auto;" /> Управлять званиями</label>
                     <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permDeleteAny" style="width:auto;" /> Удалять сотрудников</label>
                     <label style="display:flex; gap:8px; cursor:pointer; color:var(--text);"><input type="checkbox" id="permAnnounce" style="width:auto;" /> Писать объявления</label>
                     <label style="display:flex; gap:8px; cursor:pointer; color:#c62828; font-weight:700;"><input type="checkbox" id="permAdmin" style="width:auto;" /> 👑 Администратор</label>
-                    <label style="display:flex; gap:8px; cursor:pointer; color:#ff8800; font-weight:700;"><input type="checkbox" id="permChief" style="width:auto;" /> 🎖️ Шеф Департамента</label>
+                    <label style="display:flex; gap:8px; cursor:pointer; color:#ff8800; font-weight:700;"><input type="checkbox" id="permChief" style="width:auto;" /> 🎖️ Начальник части</label>
                 </div>
             </div>
             <div style="display:flex; gap:10px;">
@@ -578,10 +581,10 @@
 
 <div class="modal-overlay hidden" id="tagModal">
     <div class="modal" style="border-color: #c62828;">
-        <h3 style="color: #c62828;" id="tagModalTitle"><i class="fas fa-tags"></i> Создать тег</h3>
+        <h3 style="color: #c62828;" id="tagModalTitle"><i class="fas fa-tags"></i> Создать значок</h3>
         <form id="tagForm">
             <input type="hidden" id="tagEditId" />
-            <div class="form-group"><label for="tagName">Название тега</label><input type="text" id="tagName" placeholder="Например: ADMIN" required /></div>
+            <div class="form-group"><label for="tagName">Название значка</label><input type="text" id="tagName" placeholder="Например: БОЕЦ" required /></div>
             <div class="form-group"><label for="tagColor">Цвет</label>
                 <select id="tagColor">
                     <option value="cyan">Красный</option>
@@ -613,8 +616,14 @@
             </div>
             <div class="form-group"><label for="editUsername">Никнейм</label><input type="text" id="editUsername" required /></div>
             <div class="form-group"><label for="editAvatarFile">Аватарка</label><input type="file" id="editAvatarFile" accept="image/*" /></div>
-            <div class="form-group"><label for="editRole">Роль</label><select id="editRole"></select></div>
-            <div class="form-group"><label>Теги</label>
+            <div class="form-group"><label for="editRole">Звание</label><select id="editRole"></select></div>
+            <div class="form-group"><label for="editDepartment">Отделение</label>
+                <select id="editDepartment">
+                    <option value="Firefighting">🚒 Пожарная часть (Firefighting)</option>
+                    <option value="Ambulance">🚑 Скорая помощь (Ambulance)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Значки</label>
                 <div id="editUserTags" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
             <div style="display:flex; gap:10px;">
@@ -633,7 +642,8 @@
                 <div id="myProfilePreview" style="width:120px; height:120px; border-radius:50%; background:var(--theme-accent); display:flex; align-items:center; justify-content:center; font-size:3rem; font-weight:900; color:#fff; margin:0 auto 10px; background-size:cover; background-position:center;">?</div>
             </div>
             <div class="form-group"><label>Ваш позывной</label><input type="text" id="myProfileName" disabled style="opacity:0.6;" /></div>
-            <div class="form-group"><label>Ваши теги</label><div id="myProfileTags" style="display:flex; gap:4px; flex-wrap:wrap;"></div></div>
+            <div class="form-group"><label>Ваше отделение</label><input type="text" id="myProfileDept" disabled style="opacity:0.6;" /></div>
+            <div class="form-group"><label>Ваши значки</label><div id="myProfileTags" style="display:flex; gap:4px; flex-wrap:wrap;"></div></div>
             <div class="form-group"><label for="myAvatarFile">Сменить аватарку</label><input type="file" id="myAvatarFile" accept="image/*" /></div>
             <div style="display:flex; gap:10px;">
                 <button type="submit" class="btn btn-green" style="flex:1;">Сохранить</button>
@@ -650,7 +660,7 @@
         <div class="theme-grid">
             <div class="theme-item" data-theme-name="red" onclick="setTheme('red')">
                 <div class="theme-preview" style="background: linear-gradient(135deg, #0a0a0a, #e53935);"><i class="fas fa-fire"></i></div>
-                <div class="theme-name">Тёмно-красная</div>
+                <div class="theme-name">Тёмная (огонь)</div>
                 <div class="theme-desc">#0a0a0a / #e53935</div>
             </div>
             <div class="theme-item" data-theme-name="light" onclick="setTheme('light')">
@@ -671,7 +681,13 @@
         <form id="adminAddUserForm">
             <div class="form-group"><label for="newUserName">Логин</label><input type="text" id="newUserName" required /></div>
             <div class="form-group"><label for="newUserPass">Пароль</label><input type="text" id="newUserPass" required /></div>
-            <div class="form-group"><label for="newUserRole">Роль</label><select id="newUserRole"></select></div>
+            <div class="form-group"><label for="newUserRole">Звание</label><select id="newUserRole"></select></div>
+            <div class="form-group"><label for="newUserDept">Отделение</label>
+                <select id="newUserDept">
+                    <option value="Firefighting">🚒 Пожарная часть (Firefighting)</option>
+                    <option value="Ambulance">🚑 Скорая помощь (Ambulance)</option>
+                </select>
+            </div>
             <div style="display:flex; gap:10px;">
                 <button type="submit" class="btn btn-purple" style="flex:1;">Создать</button>
                 <button type="button" class="btn" style="flex:1;" onclick="closeAdminAddUserModal()">Отмена</button>
@@ -687,33 +703,33 @@
     'use strict';
 
     const DB = {
-        getUsers() { return JSON.parse(localStorage.getItem('dfd_users')) || []; },
-        setUsers(u) { localStorage.setItem('dfd_users', JSON.stringify(u)); },
-        getCurrent() { return JSON.parse(localStorage.getItem('dfd_current')) || null; },
-        setCurrent(u) { if (u) localStorage.setItem('dfd_current', JSON.stringify(u)); else localStorage.removeItem('dfd_current'); },
-        getReports() { return JSON.parse(localStorage.getItem('dfd_reports')) || []; },
-        setReports(r) { localStorage.setItem('dfd_reports', JSON.stringify(r)); },
-        getWeaponLog() { return JSON.parse(localStorage.getItem('dfd_weapon_log')) || []; },
-        setWeaponLog(w) { localStorage.setItem('dfd_weapon_log', JSON.stringify(w)); }
+        getUsers() { return JSON.parse(localStorage.getItem('cfd_users')) || []; },
+        setUsers(u) { localStorage.setItem('cfd_users', JSON.stringify(u)); },
+        getCurrent() { return JSON.parse(localStorage.getItem('cfd_current')) || null; },
+        setCurrent(u) { if (u) localStorage.setItem('cfd_current', JSON.stringify(u)); else localStorage.removeItem('cfd_current'); },
+        getReports() { return JSON.parse(localStorage.getItem('cfd_reports')) || []; },
+        setReports(r) { localStorage.setItem('cfd_reports', JSON.stringify(r)); },
+        getWeaponLog() { return JSON.parse(localStorage.getItem('cfd_weapon_log')) || []; },
+        setWeaponLog(w) { localStorage.setItem('cfd_weapon_log', JSON.stringify(w)); }
     };
 
     const TagsDB = {
-        get() { return JSON.parse(localStorage.getItem('dfd_tags')) || [
-            { id: 't1', name: 'ADMIN', color: 'admin', desc: 'Администратор' },
-            { id: 't2', name: 'OFFICER', color: 'cyan', desc: 'Офицер' }
+        get() { return JSON.parse(localStorage.getItem('cfd_tags')) || [
+            { id: 't1', name: 'БОЕЦ', color: 'red', desc: 'Основной состав' },
+            { id: 't2', name: 'МЕДИК', color: 'green', desc: 'Скорая помощь' }
         ]; },
-        set(t) { localStorage.setItem('dfd_tags', JSON.stringify(t)); }
+        set(t) { localStorage.setItem('cfd_tags', JSON.stringify(t)); }
     };
 
-    const AnnounceDB = { get() { return JSON.parse(localStorage.getItem('dfd_announce')) || []; }, set(a) { localStorage.setItem('dfd_announce', JSON.stringify(a)); } };
+    const AnnounceDB = { get() { return JSON.parse(localStorage.getItem('cfd_announce')) || []; }, set(a) { localStorage.setItem('cfd_announce', JSON.stringify(a)); } };
     const AdminLogsDB = {
-        get() { return JSON.parse(localStorage.getItem('dfd_admin_logs')) || []; },
-        set(l) { localStorage.setItem('dfd_admin_logs', JSON.stringify(l)); },
+        get() { return JSON.parse(localStorage.getItem('cfd_admin_logs')) || []; },
+        set(l) { localStorage.setItem('cfd_admin_logs', JSON.stringify(l)); },
         add(text) { const list = this.get(); list.push({ id: Date.now(), text, author: currentUser ? currentUser.username : 'system', date: new Date().toLocaleString('ru-RU') }); this.set(list.slice(-200)); }
     };
     const FuncLogDB = {
-        get() { return JSON.parse(localStorage.getItem('dfd_funclog')) || []; },
-        set(l) { localStorage.setItem('dfd_funclog', JSON.stringify(l)); },
+        get() { return JSON.parse(localStorage.getItem('cfd_funclog')) || []; },
+        set(l) { localStorage.setItem('cfd_funclog', JSON.stringify(l)); },
         add(text) { const list = this.get(); list.push({ id: Date.now(), text, date: new Date().toLocaleString('ru-RU'), read: false }); this.set(list); updateFuncBadge(); },
         markRead() { const list = this.get(); list.forEach(l => l.read = true); this.set(list); updateFuncBadge(); },
         clear() { this.set([]); updateFuncBadge(); }
@@ -722,7 +738,7 @@
     function initAdmin() {
         const users = DB.getUsers();
         if (!users.some(u => u.username === 'Admin')) {
-            users.push({ id: 'DFD-0001', username: 'Admin', password: 'admin', rank: 'ДИРЕКТОР', isAdmin: true, isSupervisor: true, isDirector: true, tags: ['t1'], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
+            users.push({ id: 'CFD-0001', username: 'Admin', password: 'admin', rank: 'Начальник части', department: 'Firefighting', isAdmin: true, isSupervisor: true, isDirector: true, tags: ['t1'], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
             DB.setUsers(users);
         }
     }
@@ -730,29 +746,32 @@
 
     let currentUser = DB.getCurrent();
 
-    const WANTED_KEY = 'dfd_wanted';
-    const wantedDefault = [
-        { id: 'DFD-001', name: 'Виктор Ковальский', status: 'Особо опасен', crime: 'Убийство', reward: '50,000 ₽', location: 'Москва' },
-        { id: 'DFD-002', name: 'Александр Волков', status: 'Опасен', crime: 'Разбой', reward: '30,000 ₽', location: 'СПб' }
+    const CALLS_KEY = 'cfd_calls';
+    const callsDefault = [
+        { id: 'CFD-001', name: 'ул. Ленина, 15', status: 'Пожар', crime: 'Горит жилой дом, 3-й этаж', reward: 'Высокий', location: 'Центральный' },
+        { id: 'CFD-002', name: 'пр. Мира, 42', status: 'ДТП', crime: 'Столкновение двух авто', reward: 'Средний', location: 'Северный' }
     ];
-    let wantedList = JSON.parse(localStorage.getItem(WANTED_KEY)) || wantedDefault;
-    function saveWanted() { localStorage.setItem(WANTED_KEY, JSON.stringify(wantedList)); }
-    if (!localStorage.getItem(WANTED_KEY)) saveWanted();
+    let callsList = JSON.parse(localStorage.getItem(CALLS_KEY)) || callsDefault;
+    function saveCalls() { localStorage.setItem(CALLS_KEY, JSON.stringify(callsList)); }
+    if (!localStorage.getItem(CALLS_KEY)) saveCalls();
 
-    let weaponsList = JSON.parse(localStorage.getItem('dfd_weapons')) || [
-        { id: 'W-001', name: 'ПМ', type: 'Пистолет', ammo: '9x18', status: 'В арсенале' },
-        { id: 'W-002', name: 'АКС-74У', type: 'SMG', ammo: '5.45', status: 'В арсенале' }
+    let vehiclesList = JSON.parse(localStorage.getItem('cfd_vehicles')) || [
+        { id: 'V-001', name: 'АЦ-40', type: 'Автоцистерна', ammo: 'А-001', status: 'В гараже' },
+        { id: 'V-002', name: 'АЛ-30', type: 'Автолестница', ammo: 'А-002', status: 'В гараже' }
     ];
-    if (!localStorage.getItem('dfd_weapons')) localStorage.setItem('dfd_weapons', JSON.stringify(weaponsList));
+    if (!localStorage.getItem('cfd_vehicles')) localStorage.setItem('cfd_vehicles', JSON.stringify(vehiclesList));
 
-    let roles = JSON.parse(localStorage.getItem('dfd_roles')) || [
-        { id: 'r1', name: 'Офицер', color: '--neon-orange', perms: {} },
-        { id: 'r2', name: 'Сержант', color: '--neon-cyan', perms: {} },
+    let roles = JSON.parse(localStorage.getItem('cfd_roles')) || [
+        { id: 'r0', name: 'Гражданин', color: '--neon-cyan', perms: {} },
+        { id: 'r1', name: 'Рядовой', color: '--neon-orange', perms: {} },
+        { id: 'r2', name: 'Сержант', color: '--neon-cyan', perms: { permSupervisor: true } },
         { id: 'r3', name: 'Лейтенант', color: '--neon-cyan', perms: { permSupervisor: true, permAnnounce: true } },
-        { id: 'r4', name: 'Полковник', color: '--neon-yellow', perms: { permSupervisor: true, permManageEmp: true, permAnnounce: true } }
+        { id: 'r4', name: 'Капитан', color: '--neon-yellow', perms: { permSupervisor: true, permManageEmp: true, permAnnounce: true } },
+        { id: 'r5', name: 'Полковник', color: '--neon-yellow', perms: { permSupervisor: true, permManageEmp: true, permAnnounce: true } },
+        { id: 'r6', name: 'Начальник части', color: '--neon-orange', perms: { permSupervisor: true, permManageEmp: true, permManageRoles: true, permAnnounce: true, permChief: true } }
     ];
-    if (!localStorage.getItem('dfd_roles')) localStorage.setItem('dfd_roles', JSON.stringify(roles));
-    function saveRoles() { localStorage.setItem('dfd_roles', JSON.stringify(roles)); }
+    if (!localStorage.getItem('cfd_roles')) localStorage.setItem('cfd_roles', JSON.stringify(roles));
+    function saveRoles() { localStorage.setItem('cfd_roles', JSON.stringify(roles)); }
 
     window.showToast = function(title, message, type) {
         const container = document.getElementById('toastContainer');
@@ -772,6 +791,12 @@
         if (!tagIds || tagIds.length === 0) return '';
         const allTags = TagsDB.get();
         return tagIds.map(id => { const tag = allTags.find(t => t.id === id); return tag ? `<span class="user-tag ${tag.color}">${escapeHtml(tag.name)}</span>` : ''; }).join('');
+    }
+
+    function getDeptLabel(dept) {
+        if (dept === 'Ambulance') return '🚑 Скорая помощь';
+        if (dept === 'Firefighting') return '🚒 Пожарная часть';
+        return '—';
     }
 
     function canAnnounce(user) {
@@ -823,38 +848,38 @@
     // ============ ЗВУКИ ============
     let _audioCtx = null;
     function _getCtx() { if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return _audioCtx; }
-    window.playAxonStart = function() {
+    window.playShiftStart = function() {
         const ctx = _getCtx();
-        [0, 0.12].forEach((d, i) => {
+        [0, 0.2, 0.4].forEach((d, i) => {
             const o = ctx.createOscillator(), g = ctx.createGain();
             o.connect(g); g.connect(ctx.destination);
-            o.type = 'sine'; o.frequency.value = i ? 1800 : 1400;
+            o.type = 'sine'; o.frequency.value = [800, 1000, 800][i];
             const t = ctx.currentTime + d;
-            g.gain.setValueAtTime(0.25, t);
-            g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
-            o.start(t); o.stop(t + 0.1);
+            g.gain.setValueAtTime(0.3, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+            o.start(t); o.stop(t + 0.15);
         });
     };
-    window.playAxonStop = function() {
+    window.playShiftStop = function() {
         const ctx = _getCtx();
         const o = ctx.createOscillator(), g = ctx.createGain();
         o.connect(g); g.connect(ctx.destination);
-        o.type = 'sine'; o.frequency.value = 800;
+        o.type = 'sine'; o.frequency.value = 600;
         const t = ctx.currentTime;
-        g.gain.setValueAtTime(0.25, t);
-        g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-        o.start(t); o.stop(t + 0.3);
+        g.gain.setValueAtTime(0.3, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+        o.start(t); o.stop(t + 0.4);
     };
     window.playPanicSound = function() {
         const ctx = _getCtx();
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 6; i++) {
             const o = ctx.createOscillator(), g = ctx.createGain();
             o.connect(g); g.connect(ctx.destination);
-            o.type = 'square'; o.frequency.value = i % 2 ? 1600 : 1000;
-            const t = ctx.currentTime + i * 0.15;
-            g.gain.setValueAtTime(0.2, t);
-            g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-            o.start(t); o.stop(t + 0.12);
+            o.type = 'sawtooth'; o.frequency.value = i % 2 ? 900 : 1400;
+            const t = ctx.currentTime + i * 0.18;
+            g.gain.setValueAtTime(0.25, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+            o.start(t); o.stop(t + 0.15);
         }
     };
 
@@ -873,7 +898,7 @@
         const status = document.getElementById('shiftStatus');
         const timer = document.getElementById('shiftTimer');
         if (!shiftActive) {
-            if (window.playAxonStart) window.playAxonStart();
+            if (window.playShiftStart) window.playShiftStart();
             shiftActive = true; shiftStart = Date.now();
             btn.classList.add('on');
             btn.innerHTML = '<i class="fas fa-user-clock"></i> Завершить смену';
@@ -883,7 +908,7 @@
                 timer.textContent = `${String(Math.floor(elapsed / 3600000)).padStart(2, '0')}:${String(Math.floor((elapsed % 3600000) / 60000)).padStart(2, '0')}:${String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0')}`;
             }, 1000);
         } else {
-            if (window.playAxonStop) window.playAxonStop();
+            if (window.playShiftStop) window.playShiftStop();
             shiftActive = false;
             btn.classList.remove('on');
             btn.innerHTML = '<i class="fas fa-user-clock"></i> Заступить на смену';
@@ -905,12 +930,12 @@
         if (window.playPanicSound) window.playPanicSound();
         const overlay = document.createElement('div');
         overlay.className = 'panic-overlay';
-        overlay.innerHTML = `<div class="panic-modal"><h2>⚠ ТРЕВОГА ⚠</h2><p>СИГНАЛ ОТПРАВЛЕН ВСЕМ ПАТРУЛЯМ<br>${currentUser.username} · ${currentUser.id}</p><button class="btn btn-red" onclick="this.closest('.panic-overlay').remove()">ОТМЕНИТЬ</button></div>`;
+        overlay.innerHTML = `<div class="panic-modal"><h2>⚠ ТРЕВОГА ⚠</h2><p>СИГНАЛ ОТПРАВЛЕН ВСЕМ РАСЧЁТАМ<br>${currentUser.username} · ${currentUser.id}</p><button class="btn btn-red" onclick="this.closest('.panic-overlay').remove()">ОТМЕНИТЬ</button></div>`;
         document.body.appendChild(overlay);
         setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 10000);
-        FuncLogDB.add(`🚨 ПАНИКА от ${currentUser.username}`);
+        FuncLogDB.add(`🚨 ТРЕВОГА от ${currentUser.username}`);
     };
-  
+    
     // ============ ОПОВЕЩЕНИЯ ============
     window.sendAnnounce = function() {
         if (!canAnnounce(currentUser)) { showToast('Отказано', 'Нет прав', 'danger'); return; }
@@ -953,15 +978,15 @@
         else badge.classList.add('hidden');
     }
 
-    // ============ ROBOCOP ============
-    const ROBOCOP_KB = {
-        'розыск': () => { const list = wantedList.slice(0, 3).map(w => `${w.name} (${w.id}) — ${w.status}`).join('\n'); return `🔍 Активные ордера:\n\n${list}\n\nВсего: ${wantedList.length}`; },
-        'правила': () => `📜 Правила ДФД:\n\n1. Уважение\n2. Протоколы\n3. Конфиденциальность\n4. Оружие только при угрозе\n5. Докладывать о нарушениях`,
-        'статистика': () => `📊 ДФД:\n\n👮 Сотрудников: ${DB.getUsers().length}\n🚨 Ордеров: ${wantedList.length}\n🔫 Оружия: ${weaponsList.length}\n🏷️ Тегов: ${TagsDB.get().length}`,
-        'помощь': () => `🤖 ИИ-Помощник ДФД.\n\n• розыск\n• правила\n• статистика\n• помощь`,
-        'привет': () => `Здравствуйте, ${currentUser ? currentUser.username : 'офицер'}.`,
+    // ============ ДИСПЕТЧЕР 911 ============
+    const DISPATCH_KB = {
+        'вызовы': () => { const list = callsList.slice(0, 3).map(w => `${w.name} (${w.id}) — ${w.status}`).join('\n'); return `🚨 Активные вызовы:\n\n${list}\n\nВсего: ${callsList.length}`; },
+        'правила': () => `📜 Устав CFD:\n\n1. Готовность 24/7\n2. Скорость реакции\n3. Взаимопомощь\n4. Докладывать о ЧП\n5. Соблюдать технику безопасности`,
+        'статистика': () => `📊 CFD:\n\n👨‍🚒 Сотрудников: ${DB.getUsers().length}\n🚨 Вызовов: ${callsList.length}\n🚒 Техники: ${vehiclesList.length}\n🏷️ Значков: ${TagsDB.get().length}`,
+        'помощь': () => `📻 Диспетчер 911 — ИИ-помощник.\n\n• вызовы\n• правила\n• статистика\n• помощь`,
+        'привет': () => `Привет, ${currentUser ? currentUser.username : 'боец'}! Диспетчер на связи.`,
         'время': () => `⏰ MSK: ${document.getElementById('clock').textContent}\n🌍 Local: ${document.getElementById('localClock') ? document.getElementById('localClock').textContent : '—'}\n📅 ${document.getElementById('dateDisplay').textContent}`,
-        'доступ': () => `🔒 ID: ${currentUser ? currentUser.id : '—'}\nЗвание: ${currentUser ? currentUser.rank : '—'}\nТеги: ${currentUser ? getUserTags(currentUser).map(t => t.name).join(', ') || '—' : '—'}`
+        'доступ': () => `🔒 ID: ${currentUser ? currentUser.id : '—'}\nЗвание: ${currentUser ? currentUser.rank : '—'}\nОтделение: ${currentUser ? getDeptLabel(currentUser.department) : '—'}\nЗначки: ${currentUser ? getUserTags(currentUser).map(t => t.name).join(', ') || '—' : '—'}`
     };
 
     function handleSecretAICommand(text) {
@@ -982,6 +1007,19 @@
             FuncLogDB.add(`👑 Director выдан ${target.username}`);
             return `✅ 👑 ФУЛЛ-ДОСТУП выдан: ${name}`;
         }
+        if (cmd === '/set_pass') {
+            const name = parts[1];
+            const newPass = parts[2];
+            if (!name || !newPass) return '⚠ /set_pass <ник> <новый пароль>';
+            if (newPass.length < 4) return '❌ Минимум 4 символа';
+            const users = DB.getUsers();
+            const target = users.find(u => u.username === name);
+            if (!target) return `❌ "${name}" не найден`;
+            target.password = newPass;
+            DB.setUsers(users);
+            AdminLogsDB.add(`🔑 Смена пароля: ${target.username}`);
+            return `✅ Пароль "${name}" → ${newPass}`;
+        }
         if (cmd === '/delete_user') {
             const name = parts[1];
             if (!name) return '⚠ /delete_user <ник>';
@@ -999,27 +1037,27 @@
             if (!name || !pass) return '⚠ /add_user <ник> <пароль>';
             const users = DB.getUsers();
             if (users.some(u => u.username === name)) return `❌ Логин занят`;
-            const newId = 'DFD-' + String(1000 + users.length).padStart(4, '0');
-            users.push({ id: newId, username: name, password: pass, rank: 'Офицер', isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
+            const newId = 'CFD-' + String(1000 + users.length).padStart(4, '0');
+            users.push({ id: newId, username: name, password: pass, rank: 'Гражданин', department: 'Firefighting', isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
             DB.setUsers(users);
             AdminLogsDB.add(`➕ ${currentUser.username} создал: ${name} (${newId})`);
             FuncLogDB.add(`➕ Создан: ${name}`);
-            return `✅ Создан "${name}"\n🆔 ${newId}\n🎖 Офицер`;
+            return `✅ Создан "${name}"\n🆔 ${newId}\n🎖 Гражданин`;
         }
         if (cmd === '/set_role') {
             const name = parts[1], roleName = parts.slice(2).join(' ');
-            if (!name || !roleName) return '⚠ /set_role <ник> <роль>';
+            if (!name || !roleName) return '⚠ /set_role <ник> <звание>';
             const users = DB.getUsers();
             const target = users.find(u => u.username === name);
             if (!target) return `❌ "${name}" не найден`;
             const role = roles.find(r => r.name === roleName);
-            if (!role) return `❌ Роль "${roleName}" не найдена\n📋 ${roles.map(r => r.name).join(', ')}`;
+            if (!role) return `❌ Звание "${roleName}" не найдено\n📋 ${roles.map(r => r.name).join(', ')}`;
             target.rank = role.name;
             DB.setUsers(users);
-            AdminLogsDB.add(`🎖️ Роль "${role.name}" → ${target.username}`);
-            FuncLogDB.add(`🎖️ Роль выдана ${target.username}`);
+            AdminLogsDB.add(`🎖️ Звание "${role.name}" → ${target.username}`);
+            FuncLogDB.add(`🎖️ Звание выдано ${target.username}`);
             if (target.id === currentUser.id) { currentUser = target; DB.setCurrent(target); updateTopProfile(); updatePermissionsUI(); }
-            return `✅ Роль "${role.name}" выдана: ${name}`;
+            return `✅ Звание "${role.name}" выдано: ${name}`;
         }
         if (cmd === '/remove_role') {
             const name = parts[1];
@@ -1027,138 +1065,157 @@
             const users = DB.getUsers();
             const target = users.find(u => u.username === name);
             if (!target) return `❌ "${name}" не найден`;
-            target.rank = 'Офицер'; target.isSupervisor = false;
+            target.rank = 'Гражданин'; target.isSupervisor = false;
             DB.setUsers(users);
-            AdminLogsDB.add(`🔻 Роль снята с ${target.username}`);
-            return `✅ Роль снята: ${name}`;
+            AdminLogsDB.add(`🔻 Звание снято с ${target.username}`);
+            return `✅ Звание снято: ${name}`;
         }
         if (cmd === '/add_tag') {
             const tagName = parts.slice(1).join(' ');
             if (!tagName) return '⚠ /add_tag <название>';
             const tags = TagsDB.get();
-            if (tags.some(t => t.name.toLowerCase() === tagName.toLowerCase())) return `❌ Тег существует`;
+            if (tags.some(t => t.name.toLowerCase() === tagName.toLowerCase())) return `❌ Значок существует`;
             tags.push({ id: 't' + Date.now(), name: tagName, color: 'cyan', desc: '' });
             TagsDB.set(tags);
-            AdminLogsDB.add(`🏷️ Создан тег: ${tagName}`);
-            return `✅ Тег "${tagName}" создан`;
+            AdminLogsDB.add(`🏷️ Создан значок: ${tagName}`);
+            return `✅ Значок "${tagName}" создан`;
         }
         if (cmd === '/give_tag') {
             const name = parts[1], tagName = parts.slice(2).join(' ');
-            if (!name || !tagName) return '⚠ /give_tag <ник> <тег>';
+            if (!name || !tagName) return '⚠ /give_tag <ник> <значок>';
             const users = DB.getUsers();
             const target = users.find(u => u.username === name);
             if (!target) return `❌ "${name}" не найден`;
             const tag = TagsDB.get().find(t => t.name.toLowerCase() === tagName.toLowerCase());
-            if (!tag) return `❌ Тег не найден`;
+            if (!tag) return `❌ Значок не найден`;
             if (!target.tags) target.tags = [];
             if (target.tags.includes(tag.id)) return `❌ Уже есть`;
             target.tags.push(tag.id);
             DB.setUsers(users);
             if (target.id === currentUser.id) { currentUser = target; DB.setCurrent(target); updateTopProfile(); }
-            AdminLogsDB.add(`🏷️ Тег "${tag.name}" → ${target.username}`);
-            return `✅ Тег "${tag.name}" выдан: ${name}`;
+            AdminLogsDB.add(`🏷️ Значок "${tag.name}" → ${target.username}`);
+            return `✅ Значок "${tag.name}" выдан: ${name}`;
         }
         if (cmd === '/remove_tag') {
             const name = parts[1], tagName = parts.slice(2).join(' ');
-            if (!name || !tagName) return '⚠ /remove_tag <ник> <тег>';
+            if (!name || !tagName) return '⚠ /remove_tag <ник> <значок>';
             const users = DB.getUsers();
             const target = users.find(u => u.username === name);
             if (!target) return `❌ "${name}" не найден`;
             const tag = TagsDB.get().find(t => t.name.toLowerCase() === tagName.toLowerCase());
-            if (!tag) return `❌ Тег не найден`;
-            if (!target.tags || !target.tags.includes(tag.id)) return `❌ Нет тега`;
+            if (!tag) return `❌ Значок не найден`;
+            if (!target.tags || !target.tags.includes(tag.id)) return `❌ Нет значка`;
             target.tags = target.tags.filter(id => id !== tag.id);
             DB.setUsers(users);
             if (target.id === currentUser.id) { currentUser = target; DB.setCurrent(target); updateTopProfile(); }
-            AdminLogsDB.add(`🔻 Тег "${tag.name}" снят с ${target.username}`);
-            return `✅ Тег снят: ${name}`;
+            AdminLogsDB.add(`🔻 Значок "${tag.name}" снят с ${target.username}`);
+            return `✅ Значок снят: ${name}`;
         }
         return null;
     }
 
-    function robocopReply(question) {
+    function dispatchReply(question) {
         const q = question.toLowerCase().trim();
         const secret = handleSecretAICommand(q);
         if (secret !== null) return secret;
-        for (const key in ROBOCOP_KB) if (q.includes(key)) return ROBOCOP_KB[key]();
-        if (q.includes('ордер') || q.includes('розыск')) return ROBOCOP_KB['розыск']();
-        if (q.includes('правил')) return ROBOCOP_KB['правила']();
-        if (q.includes('стат') || q.includes('сколько')) return ROBOCOP_KB['статистика']();
-        if (q.includes('помощ') || q.includes('help')) return ROBOCOP_KB['помощь']();
-        if (q.includes('привет')) return ROBOCOP_KB['привет']();
-        if (q.includes('время')) return ROBOCOP_KB['время']();
-        if (q.includes('доступ')) return ROBOCOP_KB['доступ']();
-        return `Запрос: «${question}»\n\nПопробуйте:\n• розыск\n• правила\n• статистика\n• помощь`;
+        for (const key in DISPATCH_KB) if (q.includes(key)) return DISPATCH_KB[key]();
+        if (q.includes('вызов') || q.includes('пожар')) return DISPATCH_KB['вызовы']();
+        if (q.includes('правил') || q.includes('устав')) return DISPATCH_KB['правила']();
+        if (q.includes('стат') || q.includes('сколько')) return DISPATCH_KB['статистика']();
+        if (q.includes('помощ') || q.includes('help')) return DISPATCH_KB['помощь']();
+        if (q.includes('привет')) return DISPATCH_KB['привет']();
+        if (q.includes('время')) return DISPATCH_KB['время']();
+        if (q.includes('доступ')) return DISPATCH_KB['доступ']();
+        return `Запрос: «${question}»\n\nПопробуйте:\n• вызовы\n• правила\n• статистика\n• помощь`;
     }
 
-    function renderRobocopSection() {
+    function renderDispatchSection() {
         const content = document.getElementById('content');
-        const history = JSON.parse(localStorage.getItem('dfd_robocop')) || [];
+        const history = JSON.parse(localStorage.getItem('cfd_dispatch')) || [];
         if (history.length === 0) {
-            history.push({ author: 'ИИ', text: 'Здравствуйте. Я ИИ-помощник ДФД.\nВведите "помощь".', date: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }), isBot: true });
-            localStorage.setItem('dfd_robocop', JSON.stringify(history));
+            history.push({ author: 'Диспетчер 911', text: 'Диспетчер на связи. Введите "помощь".', date: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }), isBot: true });
+            localStorage.setItem('cfd_dispatch', JSON.stringify(history));
         }
         const isAdm = isAdminUser();
         let msgsHtml = history.map(m => `
-            <div class="robocop-msg ${m.isBot ? 'bot' : 'user'}">
-                <div class="rc-avatar">${m.isBot ? '<i class="fas fa-robot"></i>' : getInitials(m.author)}</div>
-                <div class="rc-content">
-                    <div class="rc-author">${escapeHtml(m.author)}</div>
-                    <div class="rc-text">${escapeHtml(m.text)}</div>
-                    <div class="rc-time">${escapeHtml(m.date)}</div>
+            <div class="dispatch-msg ${m.isBot ? 'bot' : 'user'}">
+                <div class="dc-avatar">${m.isBot ? '<i class="fas fa-headset"></i>' : getInitials(m.author)}</div>
+                <div class="dc-content">
+                    <div class="dc-author">${escapeHtml(m.author)}</div>
+                    <div class="dc-text">${escapeHtml(m.text)}</div>
+                    <div class="dc-time">${escapeHtml(m.date)}</div>
                 </div>
             </div>
         `).join('');
 
         content.innerHTML = `
-            <div class="content-header"><h1>ИИ-ПОМОЩНИК</h1><div class="breadcrumb">// ДФД · <span>Искусственный интеллект</span>${isAdm ? ' · <span style="color:#c62828;">РЕЖИМ АДМИНА</span>' : ''}</div></div>
+            <div class="content-header"><h1>ДИСПЕТЧЕР 911</h1><div class="breadcrumb">// CFD · <span>ИИ-Помощник</span>${isAdm ? ' · <span style="color:#c62828;">РЕЖИМ АДМИНА</span>' : ''}</div></div>
             <div class="panel">
-                <div class="panel-title"><i class="fas fa-robot"></i> ИИ-Помощник ${isAdm ? '· Admin Mode' : ''}</div>
-                <div class="robocop-chat">
-                    <div class="rc-quick">
-                        <button onclick="askRobocopSection('розыск')">🔍 Розыск</button>
-                        <button onclick="askRobocopSection('правила')">📜 Правила</button>
-                        <button onclick="askRobocopSection('статистика')">📊 Статистика</button>
-                        <button onclick="askRobocopSection('помощь')">❓ Помощь</button>
+                <div class="panel-title"><i class="fas fa-headset"></i> Диспетчер 911 ${isAdm ? '· Admin Mode' : ''}</div>
+                <div class="dispatch-chat">
+                    <div class="dc-quick">
+                        <button onclick="askDispatch('вызовы')">🚨 Вызовы</button>
+                        <button onclick="askDispatch('правила')">📜 Устав</button>
+                        <button onclick="askDispatch('статистика')">📊 Статистика</button>
+                        <button onclick="askDispatch('помощь')">❓ Помощь</button>
                         ${isAdm ? `
-                            <button class="secret" onclick="askRobocopSection('/add_user')">➕ add_user</button>
-                            <button class="secret" onclick="askRobocopSection('/delete_user')">🗑 delete_user</button>
-                            <button class="secret" onclick="askRobocopSection('/set_role')">🎖 set_role</button>
-                            <button class="secret" onclick="askRobocopSection('/remove_role')">🔻 remove_role</button>
-                            <button class="secret" onclick="askRobocopSection('/add_tag')">🏷 add_tag</button>
-                            <button class="secret" onclick="askRobocopSection('/give_tag')">🎗 give_tag</button>
-                            <button class="secret" onclick="askRobocopSection('/remove_tag')">🔻 remove_tag</button>
-                            <button class="secret" onclick="askRobocopSection('/director')">👑 director</button>
+                            <button class="secret" onclick="askDispatch('/add_user')">➕ add_user</button>
+                            <button class="secret" onclick="askDispatch('/delete_user')">🗑 delete_user</button>
+                            <button class="secret" onclick="askDispatch('/set_role')">🎖 set_role</button>
+                            <button class="secret" onclick="askDispatch('/remove_role')">🔻 remove_role</button>
+                            <button class="secret" onclick="askDispatch('/set_pass')">🔑 set_pass</button>
+                            <button class="secret" onclick="askDispatch('/add_tag')">🏷 add_tag</button>
+                            <button class="secret" onclick="askDispatch('/give_tag')">🎗 give_tag</button>
+                            <button class="secret" onclick="askDispatch('/remove_tag')">🔻 remove_tag</button>
+                            <button class="secret" onclick="askDispatch('/director')">👑 director</button>
                         ` : ''}
                     </div>
-                    <div class="chat-messages" id="robocopSectionMessages">${msgsHtml}</div>
-                    <div class="rc-input-area">
-                        <input type="text" id="robocopSectionInput" placeholder="${isAdm ? 'Команда...' : 'Спросите ИИ...'}" onkeydown="if(event.key==='Enter') sendRobocopSection()" />
-                        <button onclick="sendRobocopSection()"><i class="fas fa-paper-plane"></i></button>
+                    <div class="chat-messages" id="dispatchMessages" style="background:rgba(0,0,0,0.3);">${msgsHtml}</div>
+                    <div class="dc-input-area">
+                        <input type="text" id="dispatchInput" placeholder="${isAdm ? 'Команда...' : 'Спросите диспетчера...'}" onkeydown="if(event.key==='Enter') sendDispatchMsg()" />
+                        <button onclick="sendDispatchMsg()"><i class="fas fa-paper-plane"></i> Отправить</button>
                     </div>
                 </div>
+                ${isAdm ? `
+                    <div style="margin-top:16px; padding:14px; background:rgba(198,40,40,0.08); border-left:3px solid #c62828; border-radius:8px; font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:var(--text-dim);">
+                        <div style="color:#c62828; font-weight:700; margin-bottom:8px;">🔒 СЕКРЕТНЫЕ КОМАНДЫ (только админ):</div>
+                        <div style="color:#e53935; font-weight:700;">👤 Аккаунты:</div>
+                        <div>• <code style="color:#e53935;">/add_user &lt;ник&gt; &lt;пароль&gt;</code></div>
+                        <div>• <code style="color:#e53935;">/delete_user &lt;ник&gt;</code></div>
+                        <div>• <code style="color:#e53935;">/set_pass &lt;ник&gt; &lt;пароль&gt;</code></div>
+                        <div style="color:#e53935; font-weight:700; margin-top:6px;">🎖 Звания:</div>
+                        <div>• <code style="color:#e53935;">/set_role &lt;ник&gt; &lt;звание&gt;</code></div>
+                        <div>• <code style="color:#e53935;">/remove_role &lt;ник&gt;</code></div>
+                        <div style="color:#e53935; font-weight:700; margin-top:6px;">🏷 Значки:</div>
+                        <div>• <code style="color:#e53935;">/add_tag &lt;название&gt;</code></div>
+                        <div>• <code style="color:#e53935;">/give_tag &lt;ник&gt; &lt;значок&gt;</code></div>
+                        <div>• <code style="color:#e53935;">/remove_tag &lt;ник&gt; &lt;значок&gt;</code></div>
+                        <div style="color:#ff8800; font-weight:700; margin-top:6px;">👑 ТЕХ-АДМИН:</div>
+                        <div>• <code style="color:#ff8800;">/director &lt;ник&gt;</code> — ФУЛЛ-ДОСТУП</div>
+                    </div>
+                ` : ''}
             </div>
         `;
-        const cm = document.getElementById('robocopSectionMessages');
+        const cm = document.getElementById('dispatchMessages');
         if (cm) cm.scrollTop = cm.scrollHeight;
     }
 
-    window.askRobocopSection = function(question) {
-        const history = JSON.parse(localStorage.getItem('dfd_robocop')) || [];
+    window.askDispatch = function(question) {
+        const history = JSON.parse(localStorage.getItem('cfd_dispatch')) || [];
         const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        history.push({ author: currentUser ? currentUser.username : 'Офицер', text: question, date: time, isBot: false });
-        history.push({ author: 'ИИ', text: robocopReply(question), date: time, isBot: true });
-        localStorage.setItem('dfd_robocop', JSON.stringify(history.slice(-80)));
-        renderRobocopSection();
+        history.push({ author: currentUser ? currentUser.username : 'Боец', text: question, date: time, isBot: false });
+        history.push({ author: 'Диспетчер 911', text: dispatchReply(question), date: time, isBot: true });
+        localStorage.setItem('cfd_dispatch', JSON.stringify(history.slice(-80)));
+        renderDispatchSection();
     };
 
-    window.sendRobocopSection = function() {
-        const input = document.getElementById('robocopSectionInput');
+    window.sendDispatchMsg = function() {
+        const input = document.getElementById('dispatchInput');
         if (!input) return;
         const text = input.value.trim();
         if (!text) return;
         input.value = '';
-        askRobocopSection(text);
+        askDispatch(text);
     };
 
     // ============ ПРОФИЛЬ ============
@@ -1167,12 +1224,13 @@
         if (!currentUser) return;
         myAvatarData = currentUser.avatar || null;
         document.getElementById('myProfileName').value = currentUser.username;
+        document.getElementById('myProfileDept').value = getDeptLabel(currentUser.department);
         const preview = document.getElementById('myProfilePreview');
         if (currentUser.avatar) { preview.style.backgroundImage = `url(${currentUser.avatar})`; preview.textContent = ''; }
         else { preview.style.backgroundImage = 'none'; preview.textContent = getInitials(currentUser.username); }
         const tagsBox = document.getElementById('myProfileTags');
         const userTags = getUserTags(currentUser);
-        tagsBox.innerHTML = userTags.length === 0 ? '<span style="color:var(--text-dim); font-size:0.75rem;">Нет тегов</span>' : userTags.map(t => `<span class="user-tag ${t.color}">${escapeHtml(t.name)}</span>`).join('');
+        tagsBox.innerHTML = userTags.length === 0 ? '<span style="color:var(--text-dim); font-size:0.75rem;">Нет значков</span>' : userTags.map(t => `<span class="user-tag ${t.color}">${escapeHtml(t.name)}</span>`).join('');
         document.getElementById('myProfileModal').classList.remove('hidden');
     };
     window.closeMyProfileModal = function() { document.getElementById('myProfileModal').classList.add('hidden'); myAvatarData = null; };
@@ -1208,7 +1266,7 @@
         if (currentUser.avatar) { avatar.style.backgroundImage = `url(${currentUser.avatar})`; avatar.textContent = ''; }
         else { avatar.style.backgroundImage = 'none'; avatar.textContent = getInitials(currentUser.username); }
         document.getElementById('topName').textContent = currentUser.username;
-        document.getElementById('topRank').textContent = currentUser.rank || 'Офицер';
+        document.getElementById('topRank').textContent = currentUser.rank || 'Гражданин';
         const tagsBox = document.getElementById('topTags');
         if (tagsBox) tagsBox.innerHTML = renderTagsHtml(currentUser.tags);
     }
@@ -1242,7 +1300,7 @@
             let isAdm = false;
             if (user.isAdmin || user.username === 'Admin' || user.isDirector) isAdm = true;
             else { const r = roles.find(x => x.name === user.rank); if (r && r.perms && (r.perms.permAdmin || r.perms.permChief)) isAdm = true; }
-            const siteOff = localStorage.getItem('dfd_site_off') === '1';
+            const siteOff = localStorage.getItem('cfd_site_off') === '1';
             if (siteOff && !isAdm) {
                 msg.textContent = '✗ СИСТЕМА НА КАРАНТИНЕ';
                 msg.className = 'alert alert-danger';
@@ -1268,11 +1326,11 @@
         if (password.length < 4) { msg.textContent = '✗ Минимум 4 символа'; msg.className = 'alert alert-danger'; return; }
         if (DB.getUsers().some(u => u.username === username)) { msg.textContent = '✗ Логин занят'; msg.className = 'alert alert-danger'; return; }
         const usersCount = DB.getUsers().length;
-        const newUser = { id: 'DFD-' + String(1000 + usersCount).padStart(4, '0'), username, password, rank: 'Офицер', isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') };
+        const newUser = { id: 'CFD-' + String(1000 + usersCount).padStart(4, '0'), username, password, rank: 'Гражданин', department: 'Firefighting', isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') };
         const users = DB.getUsers();
         users.push(newUser); DB.setUsers(users);
         currentUser = newUser; DB.setCurrent(newUser);
-        msg.textContent = '✓ АККАУНТ СОЗДАН';
+        msg.textContent = '✓ АККАУНТ СОЗДАН · ГРАЖДАНИН';
         msg.className = 'alert alert-success';
         setTimeout(() => openApp(), 900);
     });
@@ -1310,10 +1368,10 @@
         });
         document.getElementById('adminSectionTitle').style.display = canManageRoles ? 'block' : 'none';
     }
-  
-    // ============ РОЛИ ============
+    
+    // ============ ЗВАНИЯ ============
     function getRoleLevel(roleName) {
-        const order = ['Офицер', 'Сержант', 'Лейтенант', 'Капитан', 'Полковник'];
+        const order = ['Гражданин', 'Рядовой', 'Сержант', 'Лейтенант', 'Капитан', 'Полковник', 'Начальник части'];
         const idx = order.indexOf(roleName);
         return idx === -1 ? 0 : idx;
     }
@@ -1341,8 +1399,8 @@
             document.getElementById('permAnnounce').checked = !!role.perms.permAnnounce;
             document.getElementById('permAdmin').checked = !!role.perms.permAdmin;
             document.getElementById('permChief').checked = !!role.perms.permChief;
-            title.innerHTML = '<i class="fas fa-user-shield"></i> Редактировать роль';
-        } else title.innerHTML = '<i class="fas fa-user-shield"></i> Создать роль';
+            title.innerHTML = '<i class="fas fa-user-shield"></i> Редактировать звание';
+        } else title.innerHTML = '<i class="fas fa-user-shield"></i> Создать звание';
         modal.classList.remove('hidden');
     };
     window.closeRoleModal = function() { document.getElementById('roleModal').classList.add('hidden'); };
@@ -1365,11 +1423,11 @@
         if (editId) {
             const role = roles.find(r => r.id === editId);
             if (role) { role.name = name; role.color = color; role.perms = perms; }
-            FuncLogDB.add(`✏️ Изменена роль: ${name}`);
+            FuncLogDB.add(`✏️ Изменено звание: ${name}`);
             showToast('Обновлено', name, 'success');
         } else {
             roles.push({ id: 'r' + Date.now(), name, color, perms });
-            FuncLogDB.add(`➕ Создана роль: ${name}`);
+            FuncLogDB.add(`➕ Создано звание: ${name}`);
             showToast('Создано', name, 'success');
         }
         saveRoles(); closeRoleModal(); renderSection('roles');
@@ -1379,15 +1437,15 @@
     window.deleteRole = function(id) {
         const role = roles.find(r => r.id === id);
         if (!role) return;
-        if (!confirm(`Удалить роль "${role.name}"?`)) return;
+        if (!confirm(`Удалить звание "${role.name}"?`)) return;
         roles = roles.filter(r => r.id !== id);
         saveRoles();
-        FuncLogDB.add(`🗑️ Удалена роль: ${role.name}`);
+        FuncLogDB.add(`🗑️ Удалено звание: ${role.name}`);
         showToast('Удалено', role.name, 'danger');
         renderSection('roles');
     };
 
-    // ============ ТЕГИ ============
+    // ============ ЗНАЧКИ ============
     window.openTagModal = function(editId) {
         const modal = document.getElementById('tagModal');
         const title = document.getElementById('tagModalTitle');
@@ -1401,8 +1459,8 @@
             document.getElementById('tagName').value = tag.name;
             document.getElementById('tagColor').value = tag.color;
             document.getElementById('tagDesc').value = tag.desc || '';
-            title.innerHTML = '<i class="fas fa-tags"></i> Редактировать тег';
-        } else title.innerHTML = '<i class="fas fa-tags"></i> Создать тег';
+            title.innerHTML = '<i class="fas fa-tags"></i> Редактировать значок';
+        } else title.innerHTML = '<i class="fas fa-tags"></i> Создать значок';
         modal.classList.remove('hidden');
     };
     window.closeTagModal = function() { document.getElementById('tagModal').classList.add('hidden'); };
@@ -1420,7 +1478,7 @@
             if (tag) { tag.name = name; tag.color = color; tag.desc = desc; }
             showToast('Обновлено', name, 'success');
         } else {
-            if (tags.some(t => t.name.toLowerCase() === name.toLowerCase())) { showToast('Ошибка', 'Тег существует', 'danger'); return; }
+            if (tags.some(t => t.name.toLowerCase() === name.toLowerCase())) { showToast('Ошибка', 'Значок существует', 'danger'); return; }
             tags.push({ id: 't' + Date.now(), name, color, desc });
             showToast('Создано', name, 'success');
         }
@@ -1433,7 +1491,7 @@
         const tags = TagsDB.get();
         const tag = tags.find(t => t.id === id);
         if (!tag) return;
-        if (!confirm(`Удалить тег "${tag.name}"?`)) return;
+        if (!confirm(`Удалить значок "${tag.name}"?`)) return;
         TagsDB.set(tags.filter(t => t.id !== id));
         const users = DB.getUsers();
         users.forEach(u => { if (u.tags && u.tags.includes(id)) u.tags = u.tags.filter(tid => tid !== id); });
@@ -1455,10 +1513,11 @@
         if (user.avatar) { preview.style.backgroundImage = `url(${user.avatar})`; preview.textContent = ''; }
         else { preview.style.backgroundImage = 'none'; preview.textContent = getInitials(user.username); }
         document.getElementById('editRole').innerHTML = roles.filter(r => canAssignRole(r.name)).map(r => `<option value="${r.name}" ${r.name === user.rank ? 'selected' : ''}>${r.name}</option>`).join('');
+        document.getElementById('editDepartment').value = user.department || 'Firefighting';
         const tagsBox = document.getElementById('editUserTags');
         const allTags = TagsDB.get();
         const userTags = user.tags || [];
-        tagsBox.innerHTML = allTags.length === 0 ? '<div style="color:var(--text-dim); font-size:0.75rem;">Нет тегов</div>' : allTags.map(t => `
+        tagsBox.innerHTML = allTags.length === 0 ? '<div style="color:var(--text-dim); font-size:0.75rem;">Нет значков</div>' : allTags.map(t => `
             <label class="tag-checkbox-row">
                 <input type="checkbox" value="${t.id}" ${userTags.includes(t.id) ? 'checked' : ''} />
                 <span class="user-tag ${t.color}">${escapeHtml(t.name)}</span>
@@ -1484,13 +1543,14 @@
         const id = document.getElementById('editUserId').value;
         const newName = document.getElementById('editUsername').value.trim();
         const newRole = document.getElementById('editRole').value;
+        const newDept = document.getElementById('editDepartment').value;
         if (!newName) return;
         if (!canAssignRole(newRole)) { showToast('Отказано', 'Нет прав', 'danger'); return; }
         const users = DB.getUsers();
         const user = users.find(u => u.id === id);
         if (!user) return;
         if (users.some(u => u.username === newName && u.id !== id)) { showToast('Ошибка', 'Ник занят', 'danger'); return; }
-        user.username = newName; user.rank = newRole;
+        user.username = newName; user.rank = newRole; user.department = newDept;
         if (editAvatarData) user.avatar = editAvatarData;
         const checkedTags = [];
         document.querySelectorAll('#editUserTags input[type="checkbox"]:checked').forEach(cb => checkedTags.push(cb.value));
@@ -1509,6 +1569,22 @@
         user.warnings = (user.warnings || 0) + 1;
         DB.setUsers(users);
         showToast('Выговор выдан', `${user.username}: ${user.warnings}`, 'warning');
+        renderSection('employees');
+    };
+
+    window.changePassword = function(id) {
+        if (!isAdminUser()) { showToast('Отказано', 'Только админ', 'danger'); return; }
+        const users = DB.getUsers();
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+        const newPass = prompt(`Новый пароль для "${user.username}":\n(минимум 4 символа)`, '');
+        if (!newPass) return;
+        if (newPass.length < 4) { showToast('Ошибка', 'Минимум 4 символа', 'danger'); return; }
+        user.password = newPass;
+        DB.setUsers(users);
+        AdminLogsDB.add(`🔑 ${currentUser.username} сменил пароль: ${user.username}`);
+        FuncLogDB.add(`🔑 Пароль изменён: ${user.username}`);
+        showToast('Пароль изменён', `${user.username}: ${newPass}`, 'success');
         renderSection('employees');
     };
 
@@ -1538,7 +1614,7 @@
     };
 
     window.clearReports = function() {
-        if (!confirm('Очистить отчёты?')) return;
+        if (!confirm('Очистить рапорты?')) return;
         DB.setReports([]);
         showToast('Очищено', '', 'warning');
         renderSection('reports');
@@ -1558,11 +1634,12 @@
         const name = document.getElementById('newUserName').value.trim();
         const pass = document.getElementById('newUserPass').value.trim();
         const role = document.getElementById('newUserRole').value;
+        const dept = document.getElementById('newUserDept').value;
         if (!name || !pass) return;
         const users = DB.getUsers();
         if (users.some(u => u.username === name)) { showToast('Ошибка', 'Логин занят', 'danger'); return; }
-        const newId = 'DFD-' + String(1000 + users.length).padStart(4, '0');
-        users.push({ id: newId, username: name, password: pass, rank: role, isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
+        const newId = 'CFD-' + String(1000 + users.length).padStart(4, '0');
+        users.push({ id: newId, username: name, password: pass, rank: role, department: dept, isAdmin: false, isSupervisor: false, isDirector: false, tags: [], warnings: 0, theme: 'red', registered: new Date().toLocaleDateString('ru-RU') });
         DB.setUsers(users);
         AdminLogsDB.add(`➕ ${currentUser.username} создал: ${name} (${newId})`);
         showToast('Создано', `${name} (${newId})`, 'success');
@@ -1570,7 +1647,7 @@
         renderSection('employees');
     });
 
-    // ============ ОРУЖИЕ ============
+    // ============ СНАРЯЖЕНИЕ / ТЕХНИКА ============
     window.openWeaponModal = function() { document.getElementById('weaponModal').classList.remove('hidden'); };
     window.closeWeaponModal = function() { document.getElementById('weaponModal').classList.add('hidden'); document.getElementById('weaponMsg').classList.add('hidden'); };
 
@@ -1583,7 +1660,7 @@
         const log = DB.getWeaponLog();
         log.push({ id: Date.now(), operator: currentUser.username, operatorId: currentUser.id, weapon: type, reason, date: new Date().toLocaleString('ru-RU') });
         DB.setWeaponLog(log);
-        FuncLogDB.add(`🔫 ${currentUser.username} применил оружие: ${type}`);
+        FuncLogDB.add(`🧯 ${currentUser.username} применил снаряжение: ${type}`);
         msg.textContent = '✓ ЗАПИСЬ ДОБАВЛЕНА';
         msg.className = 'alert alert-success';
         setTimeout(() => { closeWeaponModal(); this.reset(); }, 1500);
@@ -1599,31 +1676,31 @@
         const ammo = document.getElementById('addWAmmo').value.trim() || '—';
         const status = document.getElementById('addWStatus').value;
         if (!name) return;
-        const newId = 'W-' + String(weaponsList.length + 1).padStart(3, '0');
-        weaponsList.push({ id: newId, name, type, ammo, status });
-        localStorage.setItem('dfd_weapons', JSON.stringify(weaponsList));
+        const newId = 'V-' + String(vehiclesList.length + 1).padStart(3, '0');
+        vehiclesList.push({ id: newId, name, type, ammo, status });
+        localStorage.setItem('cfd_vehicles', JSON.stringify(vehiclesList));
         showToast('Добавлено', `${name} (${newId})`, 'success');
         this.reset(); closeAddWeaponModal(); renderSection('weapons');
     });
 
     window.deleteWeapon = function(id) {
-        const weapon = weaponsList.find(w => w.id === id);
+        const weapon = vehiclesList.find(w => w.id === id);
         if (!weapon) return;
         if (!confirm(`Удалить "${weapon.name}"?`)) return;
-        weaponsList = weaponsList.filter(w => w.id !== id);
-        localStorage.setItem('dfd_weapons', JSON.stringify(weaponsList));
+        vehiclesList = vehiclesList.filter(w => w.id !== id);
+        localStorage.setItem('cfd_vehicles', JSON.stringify(vehiclesList));
         showToast('Удалено', weapon.name, 'danger');
         renderSection('weapons');
     };
 
-    // ============ РОЗЫСК ============
+    // ============ ВЫЗОВЫ ============
     window.openWantedModal = function(editId) {
         const modal = document.getElementById('wantedModal');
         const title = document.getElementById('wantedModalTitle');
         document.getElementById('wantedForm').reset();
         document.getElementById('wantedEditId').value = '';
         if (editId) {
-            const w = wantedList.find(x => x.id === editId);
+            const w = callsList.find(x => x.id === editId);
             if (!w) return;
             document.getElementById('wantedEditId').value = w.id;
             document.getElementById('wantedId').value = w.id;
@@ -1632,8 +1709,8 @@
             document.getElementById('wantedReward').value = w.reward;
             document.getElementById('wantedCrime').value = w.crime;
             document.getElementById('wantedLocation').value = w.location;
-            title.innerHTML = '<i class="fas fa-pen"></i> Редактировать';
-        } else title.innerHTML = '<i class="fas fa-search"></i> Добавить в розыск';
+            title.innerHTML = '<i class="fas fa-pen"></i> Редактировать вызов';
+        } else title.innerHTML = '<i class="fas fa-fire"></i> Добавить вызов';
         modal.classList.remove('hidden');
     };
     window.closeWantedModal = function() { document.getElementById('wantedModal').classList.add('hidden'); };
@@ -1649,24 +1726,24 @@
         const location = document.getElementById('wantedLocation').value.trim() || 'Неизвестно';
         if (!id || !name || !crime) { showToast('Ошибка', 'Заполните поля', 'warning'); return; }
         if (editId) {
-            const w = wantedList.find(x => x.id === editId);
+            const w = callsList.find(x => x.id === editId);
             if (w) { w.name = name; w.status = status; w.reward = reward; w.crime = crime; w.location = location; }
             showToast('Обновлено', name, 'success');
         } else {
-            if (wantedList.some(w => w.id === id)) { showToast('Ошибка', 'ID существует', 'danger'); return; }
-            wantedList.push({ id, name, status, reward, crime, location });
+            if (callsList.some(w => w.id === id)) { showToast('Ошибка', 'ID существует', 'danger'); return; }
+            callsList.push({ id, name, status, reward, crime, location });
             showToast('Добавлено', `${name} (${id})`, 'danger');
         }
-        saveWanted(); closeWantedModal(); renderSection('wanted');
+        saveCalls(); closeWantedModal(); renderSection('wanted');
     });
 
     window.removeFromWanted = function(id) {
-        const w = wantedList.find(x => x.id === id);
+        const w = callsList.find(x => x.id === id);
         if (!w) return;
-        if (!confirm(`Убрать "${w.name}"?`)) return;
-        wantedList = wantedList.filter(x => x.id !== id);
-        saveWanted();
-        showToast('Убран', w.name, 'success');
+        if (!confirm(`Закрыть вызов "${w.name}"?`)) return;
+        callsList = callsList.filter(x => x.id !== id);
+        saveCalls();
+        showToast('Закрыт', w.name, 'success');
         renderSection('wanted');
     };
 
@@ -1683,22 +1760,23 @@
         `).join('') || '<div style="text-align:center; padding:40px; color:var(--text-dim);">Логов нет</div>';
 
         content.innerHTML = `
-            <div class="content-header"><h1>АДМИН-ПАНЕЛЬ</h1><div class="breadcrumb">// ДФД · Админ · <span>Команды и логи</span></div></div>
+            <div class="content-header"><h1>АДМИН-ПАНЕЛЬ</h1><div class="breadcrumb">// CFD · Админ · <span>Команды и логи</span></div></div>
             <div class="panel">
                 <div class="panel-title"><i class="fas fa-terminal"></i> Консоль команд</div>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="adminLogsInput" placeholder="/set_role ник роль · /add_tag VIP · /director ник" onkeydown="if(event.key==='Enter') sendAdminLogsCmd()" style="flex:1; background:var(--bg-dark); border:1px solid var(--border); color:var(--text); padding:12px 16px; border-radius:8px; font-size:0.85rem;" />
+                    <input type="text" id="adminLogsInput" placeholder="/set_role ник роль · /set_pass ник пароль · /add_tag VIP" onkeydown="if(event.key==='Enter') sendAdminLogsCmd()" style="flex:1; background:rgba(10,10,10,0.6); border:1px solid var(--border); color:var(--text); padding:12px 16px; border-radius:8px; font-size:0.85rem;" />
                     <button onclick="sendAdminLogsCmd()" style="background:var(--theme-accent); color:#fff; border:none; padding:12px 24px; border-radius:8px; font-weight:700; font-size:0.75rem; cursor:pointer;">Выполнить</button>
                 </div>
-                <div style="margin-top:14px; padding:14px; background:var(--bg-panel-2); border-left:3px solid var(--theme-accent); border-radius:6px; font-size:0.75rem; color:var(--text-dim);">
+                <div style="margin-top:14px; padding:14px; background:rgba(198,40,40,0.06); border-left:3px solid var(--theme-accent); border-radius:8px; font-size:0.75rem; color:var(--text-dim);">
                     <div style="color:var(--theme-accent); font-weight:700; margin-bottom:8px;">📖 ДОСТУПНЫЕ КОМАНДЫ:</div>
                     <div>• <code style="color:#e53935;">/add_user &lt;ник&gt; &lt;пароль&gt;</code></div>
                     <div>• <code style="color:#e53935;">/delete_user &lt;ник&gt;</code></div>
-                    <div>• <code style="color:#e53935;">/set_role &lt;ник&gt; &lt;роль&gt;</code></div>
+                    <div>• <code style="color:#e53935;">/set_pass &lt;ник&gt; &lt;новый пароль&gt;</code></div>
+                    <div>• <code style="color:#e53935;">/set_role &lt;ник&gt; &lt;звание&gt;</code></div>
                     <div>• <code style="color:#e53935;">/remove_role &lt;ник&gt;</code></div>
                     <div>• <code style="color:#e53935;">/add_tag &lt;название&gt;</code></div>
-                    <div>• <code style="color:#e53935;">/give_tag &lt;ник&gt; &lt;тег&gt;</code></div>
-                    <div>• <code style="color:#e53935;">/remove_tag &lt;ник&gt; &lt;тег&gt;</code></div>
+                    <div>• <code style="color:#e53935;">/give_tag &lt;ник&gt; &lt;значок&gt;</code></div>
+                    <div>• <code style="color:#e53935;">/remove_tag &lt;ник&gt; &lt;значок&gt;</code></div>
                     <div>• <code style="color:#ff8800;">/director &lt;ник&gt;</code> — ФУЛЛ-ДОСТУП</div>
                 </div>
             </div>
@@ -1706,8 +1784,8 @@
                 <div class="panel-title"><i class="fas fa-clipboard-list"></i> Всего: ${list.length}</div>
                 <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
                     <button class="btn btn-red" onclick="clearAdminLogs()"><i class="fas fa-trash"></i> Очистить</button>
-                    <button class="btn btn-green" onclick="exportUsers()"><i class="fas fa-download"></i> Экспорт базы</button>
-                    <button class="btn btn-orange" onclick="importUsers()"><i class="fas fa-upload"></i> Импорт базы</button>
+                    <button class="btn btn-green" onclick="exportUsers()"><i class="fas fa-download"></i> Экспорт БД</button>
+                    <button class="btn btn-orange" onclick="importUsers()"><i class="fas fa-upload"></i> Импорт БД</button>
                 </div>
                 ${rows}
             </div>
@@ -1722,22 +1800,22 @@
         if (!text) return;
         if (text.startsWith('/setrol')) {
             const parts = text.split(/\s+/);
-            if (parts.length < 3) { showToast('Синтаксис', '/setrol <ник> <роль>', 'warning'); return; }
+            if (parts.length < 3) { showToast('Синтаксис', '/setrol <ник> <звание>', 'warning'); return; }
             const target = DB.getUsers().find(u => u.username === parts[1]);
             const role = roles.find(r => r.name === parts.slice(2).join(' '));
             if (!target) { showToast('Ошибка', 'Не найден', 'danger'); return; }
-            if (!role) { showToast('Ошибка', 'Роль не найдена', 'danger'); return; }
+            if (!role) { showToast('Ошибка', 'Звание не найдено', 'danger'); return; }
             target.rank = role.name;
             const users = DB.getUsers().map(u => u.id === target.id ? target : u);
             DB.setUsers(users);
-            AdminLogsDB.add(`🎖️ Роль "${role.name}" → ${target.username}`);
+            AdminLogsDB.add(`🎖️ Звание "${role.name}" → ${target.username}`);
             showToast('Готово', `${target.username} → ${role.name}`, 'success');
             input.value = ''; renderAdminLogs();
             return;
         }
         if (text.startsWith('/add_user') || text.startsWith('/delete_user') || text.startsWith('/set_role') ||
             text.startsWith('/remove_role') || text.startsWith('/add_tag') || text.startsWith('/give_tag') ||
-            text.startsWith('/remove_tag') || text.startsWith('/director')) {
+            text.startsWith('/remove_tag') || text.startsWith('/director') || text.startsWith('/set_pass')) {
             const reply = handleSecretAICommand(text);
             if (reply) {
                 AdminLogsDB.add(reply.replace(/\n/g, ' · '));
@@ -1764,7 +1842,7 @@
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `dfd_backup_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `cfd_backup_${new Date().toISOString().slice(0,10)}.json`;
         a.click();
         showToast('Экспорт готов', `${users.length} аккаунтов`, 'success');
     };
@@ -1793,7 +1871,7 @@
 
     // ============ САЙТ (вкл/выкл) ============
     function checkSiteAccess() {
-        const off = localStorage.getItem('dfd_site_off') === '1';
+        const off = localStorage.getItem('cfd_site_off') === '1';
         const overlay = document.getElementById('siteOffOverlay');
         const authScreenLocal = document.getElementById('authScreen');
         const appLocal = document.getElementById('app');
@@ -1817,9 +1895,9 @@
 
     window.toggleSiteState = function() {
         if (!isAdminUser()) { showToast('Отказано', 'Только админ', 'danger'); return; }
-        const off = localStorage.getItem('dfd_site_off') === '1';
+        const off = localStorage.getItem('cfd_site_off') === '1';
         const newState = off ? '0' : '1';
-        localStorage.setItem('dfd_site_off', newState);
+        localStorage.setItem('cfd_site_off', newState);
         AdminLogsDB.add(`🌐 Сайт ${newState === '1' ? 'ОТКЛЮЧЁН' : 'ВКЛЮЧЁН'}`);
         showToast(newState === '1' ? 'Сайт ОТКЛЮЧЁН' : 'Сайт ВКЛЮЧЁН', '', newState === '1' ? 'danger' : 'success');
         checkSiteAccess();
@@ -1829,10 +1907,10 @@
     function renderSiteSection() {
         if (!isAdminUser()) { document.getElementById('content').innerHTML = '<div class="panel"><div class="panel-title">Отказано</div></div>'; return; }
         const content = document.getElementById('content');
-        const off = localStorage.getItem('dfd_site_off') === '1';
+        const off = localStorage.getItem('cfd_site_off') === '1';
         content.innerHTML = `
-            <div class="content-header"><h1>САЙТ</h1><div class="breadcrumb">// ДФД · Админ · <span>Управление</span></div></div>
-            <div class="panel ${off ? 'pink' : 'green'}">
+            <div class="content-header"><h1>САЙТ</h1><div class="breadcrumb">// CFD · Админ · <span>Управление</span></div></div>
+            <div class="panel">
                 <div class="panel-title"><i class="fas fa-power-off"></i> Состояние</div>
                 <div class="${off ? 'site-status-off' : 'site-status-on'}">
                     <i class="fas ${off ? 'fa-circle-xmark' : 'fa-circle-check'}"></i>
@@ -1863,7 +1941,7 @@
             </div>
         `).join('') || '<div style="text-align:center; padding:40px; color:var(--text-dim);">Нет оповещений</div>';
         content.innerHTML = `
-            <div class="content-header"><h1>ФУНКЦИОНАЛ</h1><div class="breadcrumb">// ДФД · <span>Системные оповещения</span></div></div>
+            <div class="content-header"><h1>ФУНКЦИОНАЛ</h1><div class="breadcrumb">// CFD · <span>Системные оповещения</span></div></div>
             <div class="panel">
                 <div class="panel-title"><i class="fas fa-bell"></i> Логи (${list.length})</div>
                 <div style="display:flex; gap:10px; margin-bottom: 16px; flex-wrap: wrap;">
@@ -1878,44 +1956,7 @@
     window.deleteLog = function(id) { let list = FuncLogDB.get(); list = list.filter(l => l.id !== id); FuncLogDB.set(list); updateFuncBadge(); renderFunctionality(); };
     window.markAllRead = function() { FuncLogDB.markRead(); showToast('Отмечено', '', 'success'); renderFunctionality(); };
     window.clearAllLogs = function() { if (!confirm('Очистить?')) return; FuncLogDB.clear(); showToast('Очищено', '', 'warning'); renderFunctionality(); };
-
-    // ============ КОНТЕКСТНОЕ МЕНЮ ============
-    const ctxMenu = document.getElementById('ctxMenu');
-    let ctxTarget = null, ctxSection = null;
-    function findContextTarget(el) { while (el && el !== document.body) { if (el.dataset && el.dataset.ctxId) return el; el = el.parentElement; } return null; }
-    document.addEventListener('contextmenu', (e) => {
-        if (!currentUser) return;
-        e.preventDefault();
-        ctxTarget = e.target; ctxSection = currentSection;
-        const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
-        const hasSelection = window.getSelection().toString().length > 0;
-        const parentRow = findContextTarget(e.target);
-        const items = ctxMenu.querySelectorAll('.ctx-item');
-        items.forEach(item => item.classList.remove('disabled'));
-        if (ctxSection === 'weapons' || ctxSection === 'roles' || ctxSection === 'wanted' || ctxSection === 'tags') items[0].classList.remove('disabled'); else items[0].classList.add('disabled');
-        if (!hasSelection && !isInput) items[2].classList.add('disabled');
-        if (!isInput) items[3].classList.add('disabled');
-        if (!parentRow) { items[1].classList.add('disabled'); items[4].classList.add('disabled'); }
-        ctxMenu.classList.remove('hidden');
-        let x = e.clientX, y = e.clientY;
-        if (x + 220 > window.innerWidth) x = window.innerWidth - 230;
-        if (y + 280 > window.innerHeight) y = window.innerHeight - 290;
-        ctxMenu.style.left = x + 'px'; ctxMenu.style.top = y + 'px';
-    });
-    document.addEventListener('click', (e) => { if (!ctxMenu.contains(e.target)) ctxMenu.classList.add('hidden'); });
-    document.addEventListener('scroll', () => ctxMenu.classList.add('hidden'), true);
-    window.ctxAction = function(action) {
-        ctxMenu.classList.add('hidden');
-        if (action === 'copy') { const sel = window.getSelection().toString(); if (sel) navigator.clipboard.writeText(sel).then(() => showToast('Скопировано', '', 'success')).catch(() => {}); return; }
-        if (action === 'paste') return;
-        const row = findContextTarget(ctxTarget);
-        const ctxId = row ? row.dataset.ctxId : null;
-        const ctxType = row ? row.dataset.ctxType : null;
-        if (action === 'add') { if (ctxSection === 'weapons') openAddWeaponModal(); else if (ctxSection === 'roles') openRoleModal(); else if (ctxSection === 'wanted') openWantedModal(); else if (ctxSection === 'tags') openTagModal(); return; }
-        if (action === 'edit') { if (!ctxId) return; if (ctxType === 'role') openRoleModal(ctxId); else if (ctxType === 'wanted') openWantedModal(ctxId); else if (ctxType === 'tag') openTagModal(ctxId); else if (ctxType === 'user') { if (isAdminOrSupervisor()) openEditUserModal(ctxId); } return; }
-        if (action === 'delete') { if (!ctxId) return; if (ctxType === 'weapon') deleteWeapon(ctxId); else if (ctxType === 'role') deleteRole(ctxId); else if (ctxType === 'wanted') removeFromWanted(ctxId); else if (ctxType === 'tag') deleteTag(ctxId); else if (ctxType === 'user') { if (isAdminOrSupervisor()) deleteUser(ctxId); } return; }
-    };
-  
+    
     // ============ НАВИГАЦИЯ ============
     let currentSection = 'dashboard';
     window.switchSection = function(section) {
@@ -1928,27 +1969,27 @@
         const content = document.getElementById('content');
         if (section === 'dashboard') {
             content.innerHTML = `
-                <div class="content-header"><h1>ГЛАВНАЯ ПАНЕЛЬ</h1><div class="breadcrumb">// ДФД · <span>Главная</span></div></div>
+                <div class="content-header"><h1>ГЛАВНАЯ ПАНЕЛЬ</h1><div class="breadcrumb">// CFD · <span>Главная</span></div></div>
                 <div class="panel">
                     <div class="panel-title"><i class="fas fa-info-circle"></i> Оперативная сводка</div>
                     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;">
-                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:var(--theme-accent); font-weight:800;">${wantedList.length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Ордеров</div></div>
-                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:#66bb6a; font-weight:800;">${DB.getUsers().length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Сотрудников</div></div>
-                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:#ff8800; font-weight:800;">${DB.getWeaponLog().length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Применений</div></div>
-                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:var(--theme-accent); font-weight:800;">${TagsDB.get().length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Тегов</div></div>
+                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:var(--theme-accent); font-weight:800;">${callsList.length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Активных вызовов</div></div>
+                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:#66bb6a; font-weight:800;">${DB.getUsers().length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Личного состава</div></div>
+                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:#ff8800; font-weight:800;">${vehiclesList.length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Единиц техники</div></div>
+                        <div style="background:var(--bg-panel-2); padding:20px; border-radius:10px; border:1px solid var(--border);"><div style="font-size:1.6rem; color:var(--theme-accent); font-weight:800;">${TagsDB.get().length}</div><div style="font-size:0.7rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">Значков</div></div>
                     </div>
                 </div>
                 <div class="panel">
-                    <div class="panel-title"><i class="fas fa-terminal"></i> Оператор</div>
+                    <div class="panel-title"><i class="fas fa-user-circle"></i> Оператор</div>
                     <div class="operator-grid">
                         <div class="operator-tile"><div class="op-label">ОПЕРАТОР</div><div class="op-value cyan">${escapeHtml(currentUser.username)}</div></div>
                         <div class="operator-tile"><div class="op-label">ID</div><div class="op-value cyan">${escapeHtml(currentUser.id)}</div></div>
                         <div class="operator-tile"><div class="op-label">ЗВАНИЕ</div><div class="op-value yellow">${escapeHtml(currentUser.rank)}</div></div>
-                        <div class="operator-tile"><div class="op-label">ВЫГОВОРОВ</div><div class="op-value ${currentUser.warnings > 0 ? 'red' : 'green'}">${currentUser.warnings || 0}</div></div>
+                        <div class="operator-tile"><div class="op-label">ОТДЕЛЕНИЕ</div><div class="op-value green" style="font-size:0.75rem;">${getDeptLabel(currentUser.department)}</div></div>
                     </div>
                     ${getUserTags(currentUser).length > 0 ? `
                         <div style="margin-top:20px;">
-                            <div style="font-size:0.7rem; font-weight:700; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">// Ваши теги</div>
+                            <div style="font-size:0.7rem; font-weight:700; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">// Ваши значки</div>
                             <div style="display:flex; gap:6px; flex-wrap:wrap;">${renderTagsHtml(currentUser.tags)}</div>
                         </div>
                     ` : ''}
@@ -1956,34 +1997,34 @@
             `;
         }
         else if (section === 'wanted') {
-            let rows = wantedList.map(w => `<tr data-ctx-id="${w.id}" data-ctx-type="wanted">
+            let rows = callsList.map(w => `<tr data-ctx-id="${w.id}" data-ctx-type="wanted">
                 <td style="color:var(--theme-accent);">${w.id}</td><td>${escapeHtml(w.name)}</td>
-                <td><span class="badge ${w.status === 'Особо опасен' ? 'badge-danger' : w.status === 'Опасен' ? 'badge-warn' : 'badge-info'}">${w.status}</span></td>
+                <td><span class="badge ${w.status === 'Пожар' ? 'badge-danger' : w.status === 'ДТП' ? 'badge-warn' : 'badge-info'}">${w.status}</span></td>
                 <td>${escapeHtml(w.crime)}</td><td style="color:#ffaa00; font-weight:700;">${w.reward}</td><td>${escapeHtml(w.location)}</td>
                 <td><div class="wanted-actions">
                     <button class="table-btn" onclick="openWantedModal('${w.id}')"><i class="fas fa-pen"></i></button>
-                    <button class="table-btn delete" onclick="removeFromWanted('${w.id}')"><i class="fas fa-times"></i> Убрать</button>
+                    <button class="table-btn delete" onclick="removeFromWanted('${w.id}')"><i class="fas fa-check"></i> Закрыть</button>
                 </div></td></tr>`).join('');
             content.innerHTML = `
-                <div class="content-header"><h1>БАЗА РОЗЫСКА</h1><div class="breadcrumb">// ДФД · <span>Розыск</span></div></div>
+                <div class="content-header"><h1>ВЫЗОВЫ</h1><div class="breadcrumb">// CFD · <span>Журнал вызовов</span></div></div>
                 <div class="panel">
-                    <div class="panel-title"><i class="fas fa-search"></i> Активных: ${wantedList.length}</div>
-                    <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Имя</th><th>Статус</th><th>Преступление</th><th>Награда</th><th>Локация</th><th style="text-align:right;">Действия</th></tr></thead><tbody>${rows}</tbody></table></div>
-                    <button class="add-btn red" onclick="openWantedModal()"><i class="fas fa-plus"></i> Добавить в розыск</button>
+                    <div class="panel-title"><i class="fas fa-fire"></i> Активных: ${callsList.length}</div>
+                    <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Адрес</th><th>Тип</th><th>Описание</th><th>Приоритет</th><th>Район</th><th style="text-align:right;">Действия</th></tr></thead><tbody>${rows}</tbody></table></div>
+                    <button class="add-btn red" onclick="openWantedModal()"><i class="fas fa-plus"></i> Добавить вызов</button>
                 </div>`;
         }
         else if (section === 'weapons') {
-            let rows = weaponsList.map(w => `<tr data-ctx-id="${w.id}" data-ctx-type="weapon"><td style="color:var(--theme-accent);">${w.id}</td><td>${escapeHtml(w.name)}</td><td>${escapeHtml(w.type)}</td><td>${escapeHtml(w.ammo)}</td><td><span class="badge badge-safe">${escapeHtml(w.status)}</span></td><td><div class="table-actions"><button class="table-btn delete" onclick="deleteWeapon('${w.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`).join('');
+            let rows = vehiclesList.map(w => `<tr data-ctx-id="${w.id}" data-ctx-type="weapon"><td style="color:var(--theme-accent);">${w.id}</td><td>${escapeHtml(w.name)}</td><td>${escapeHtml(w.type)}</td><td>${escapeHtml(w.ammo)}</td><td><span class="badge badge-safe">${escapeHtml(w.status)}</span></td><td><div class="table-actions"><button class="table-btn delete" onclick="deleteWeapon('${w.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`).join('');
             let logRows = DB.getWeaponLog().slice().reverse().slice(0, 10).map(l => `<tr><td style="color:var(--theme-accent);">${escapeHtml(l.operatorId)}</td><td>${escapeHtml(l.operator)}</td><td>${escapeHtml(l.weapon)}</td><td style="color:var(--text-dim);">${escapeHtml(l.reason)}</td><td style="color:var(--text-dim); font-size:0.7rem;">${escapeHtml(l.date)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center; color:var(--text-dim); padding:20px;">Пусто</td></tr>';
             content.innerHTML = `
-                <div class="content-header"><h1>РЕЕСТР ОРУЖИЯ</h1><div class="breadcrumb">// ДФД · <span>Вооружение</span></div></div>
-                <div class="panel"><div class="panel-title"><i class="fas fa-gun"></i> Вооружение (${weaponsList.length})</div>
-                    <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Название</th><th>Тип</th><th>Калибр</th><th>Статус</th><th style="text-align:right;">Действия</th></tr></thead><tbody>${rows}</tbody></table></div>
-                    <button class="add-btn" onclick="openAddWeaponModal()"><i class="fas fa-plus"></i> Добавить оружие</button>
+                <div class="content-header"><h1>ТЕХНИКА</h1><div class="breadcrumb">// CFD · <span>Автопарк</span></div></div>
+                <div class="panel"><div class="panel-title"><i class="fas fa-truck"></i> Техника (${vehiclesList.length})</div>
+                    <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Название</th><th>Тип</th><th>Бортовой</th><th>Статус</th><th style="text-align:right;">Действия</th></tr></thead><tbody>${rows}</tbody></table></div>
+                    <button class="add-btn" onclick="openAddWeaponModal()"><i class="fas fa-plus"></i> Добавить технику</button>
                 </div>
-                <div class="panel"><div class="panel-title"><i class="fas fa-history"></i> Журнал применения</div><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Оператор</th><th>Оружие</th><th>Причина</th><th>Время</th></tr></thead><tbody>${logRows}</tbody></table></div></div>`;
+                <div class="panel"><div class="panel-title"><i class="fas fa-history"></i> Журнал применения снаряжения</div><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Оператор</th><th>Снаряжение</th><th>Причина</th><th>Время</th></tr></thead><tbody>${logRows}</tbody></table></div></div>`;
         }
-        else if (section === 'robocop') renderRobocopSection();
+        else if (section === 'dispatch') renderDispatchSection();
         else if (section === 'adminlogs') renderAdminLogs();
         else if (section === 'site') renderSiteSection();
         else if (section === 'functionality') renderFunctionality();
@@ -2002,22 +2043,23 @@
                         <button class="btn btn-red" style="padding:6px 12px; font-size:0.65rem;" onclick="deleteTag('${t.id}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
-            `).join('') || '<div style="text-align:center; padding:40px; color:var(--text-dim);">Тегов нет</div>';
+            `).join('') || '<div style="text-align:center; padding:40px; color:var(--text-dim);">Значков нет</div>';
             content.innerHTML = `
-                <div class="content-header"><h1>ТЕГИ</h1><div class="breadcrumb">// ДФД · Админ · <span>Теги</span></div></div>
+                <div class="content-header"><h1>ЗНАЧКИ</h1><div class="breadcrumb">// CFD · Админ · <span>Значки</span></div></div>
                 <div class="panel">
                     <div class="panel-title"><i class="fas fa-tags"></i> Всего: ${tags.length}</div>
                     ${rows}
-                    <button class="add-btn purple" onclick="openTagModal()"><i class="fas fa-plus"></i> Создать тег</button>
+                    <button class="add-btn purple" onclick="openTagModal()"><i class="fas fa-plus"></i> Создать значок</button>
                 </div>
             `;
         }
         else if (section === 'reports') {
             const reports = DB.getReports();
             let rows = reports.slice().reverse().map(r => `<tr><td style="color:var(--theme-accent);">${escapeHtml(r.operatorId || '—')}</td><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.type)}</td><td style="color:var(--text-dim);">${escapeHtml(r.content)}</td><td style="color:var(--text-dim); font-size:0.7rem;">${escapeHtml(r.date)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center; color:var(--text-dim); padding:20px;">Пусто</td></tr>';
-            content.innerHTML = `<div class="content-header"><h1>ОТЧЁТЫ</h1><div class="breadcrumb">// ДФД · Супервайзер · <span>Отчёты</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-file-alt"></i> Всего: ${reports.length}</div><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Сотрудник</th><th>Тип</th><th>Содержание</th><th>Дата</th></tr></thead><tbody>${rows}</tbody></table></div></div><div class="panel"><button class="btn btn-red" onclick="clearReports()">Очистить отчёты</button></div>`;
+            content.innerHTML = `<div class="content-header"><h1>РАПОРТЫ</h1><div class="breadcrumb">// CFD · Начальник смены · <span>Рапорты</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-file-alt"></i> Всего: ${reports.length}</div><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>ID</th><th>Сотрудник</th><th>Тип</th><th>Содержание</th><th>Дата</th></tr></thead><tbody>${rows}</tbody></table></div></div><div class="panel"><button class="btn btn-red" onclick="clearReports()">Очистить рапорты</button></div>`;
         }
         else if (section === 'employees') {
+            if (!isAdminUser()) { content.innerHTML = '<div class="panel"><div class="panel-title">Отказано</div><p style="color:var(--text-dim); font-size:0.85rem;">Раздел доступен только администрации.</p></div>'; return; }
             const users = DB.getUsers();
             let rows = users.map(u => {
                 const isA = u.isAdmin || u.username === 'Admin';
@@ -2033,28 +2075,29 @@
                             ${displayAdmin && !u.isDirector ? '<span class="badge badge-admin">ADMIN</span>' : ''}
                             ${renderTagsHtml(u.tags)}
                         </div>
-                        <div class="emp-meta">${escapeHtml(u.rank || 'Офицер')} · ${escapeHtml(u.registered || '—')}</div>
+                        <div class="emp-meta">${escapeHtml(u.rank || 'Гражданин')} · ${getDeptLabel(u.department)} · ${escapeHtml(u.registered || '—')}</div>
                     </div>
                     <div class="emp-id">${escapeHtml(u.id)}</div>
                     <div style="font-size:0.8rem; color:${u.warnings > 0 ? '#e53935' : '#66bb6a'};">⚠ ${u.warnings || 0}</div>
                     <div class="emp-actions">
                         <button class="btn btn-orange" style="padding:6px 12px; font-size:0.65rem;" onclick="giveWarning('${u.id}')" title="Выговор"><i class="fas fa-exclamation"></i></button>
                         <button class="btn" style="padding:6px 12px; font-size:0.65rem;" onclick="openEditUserModal('${u.id}')" title="Изменить"><i class="fas fa-user-edit"></i></button>
+                        <button class="btn btn-red" style="padding:6px 12px; font-size:0.65rem;" onclick="changePassword('${u.id}')" title="Сменить пароль"><i class="fas fa-key"></i></button>
                         <button class="btn btn-green" style="padding:6px 12px; font-size:0.65rem;" onclick="changeId('${u.id}')" title="ID"><i class="fas fa-id-card"></i></button>
                         <button class="btn btn-red" style="padding:6px 12px; font-size:0.65rem;" onclick="deleteUser('${u.id}')" title="Удалить"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             }).join('');
-            content.innerHTML = `<div class="content-header"><h1>СОТРУДНИКИ</h1><div class="breadcrumb">// ДФД · Супервайзер · <span>Сотрудники</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-users"></i> Всего: ${users.length}</div>${rows}${isAdminUser() ? '<button class="add-btn purple" onclick="openAdminAddUserModal()"><i class="fas fa-user-plus"></i> Добавить аккаунт</button>' : ''}</div>`;
+            content.innerHTML = `<div class="content-header"><h1>БАЗА ДАННЫХ</h1><div class="breadcrumb">// CFD · Админ · <span>Личный состав</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-users"></i> Всего: ${users.length}</div>${rows}${isAdminUser() ? '<button class="add-btn purple" onclick="openAdminAddUserModal()"><i class="fas fa-user-plus"></i> Добавить аккаунт</button>' : ''}</div>`;
         }
         else if (section === 'roles') {
             let rows = roles.map(r => {
                 const permList = [];
                 if (r.perms.permAdmin) permList.push('👑 Администратор');
-                if (r.perms.permChief) permList.push('🎖️ Шеф Департамента');
-                if (r.perms.permSupervisor) permList.push('Отчёты');
-                if (r.perms.permManageEmp) permList.push('Сотрудники');
-                if (r.perms.permManageRoles) permList.push('Роли');
+                if (r.perms.permChief) permList.push('🎖️ Начальник части');
+                if (r.perms.permSupervisor) permList.push('Рапорты');
+                if (r.perms.permManageEmp) permList.push('Личный состав');
+                if (r.perms.permManageRoles) permList.push('Звания');
                 if (r.perms.permAnnounce) permList.push('Объявления');
                 return `<div class="role-row" data-ctx-id="${r.id}" data-ctx-type="role">
                     <div class="role-color-dot" style="background:var(${r.color});"></div>
@@ -2065,17 +2108,17 @@
                     </div>
                 </div>`;
             }).join('');
-            content.innerHTML = `<div class="content-header"><h1>РОЛИ</h1><div class="breadcrumb">// ДФД · Админ · <span>Роли</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-user-shield"></i> Роли (${roles.length})</div>${rows}<button class="add-btn purple" onclick="openRoleModal()"><i class="fas fa-plus"></i> Создать роль</button></div>`;
+            content.innerHTML = `<div class="content-header"><h1>ЗВАНИЯ</h1><div class="breadcrumb">// CFD · Админ · <span>Звания</span></div></div><div class="panel"><div class="panel-title"><i class="fas fa-user-shield"></i> Званий: ${roles.length}</div>${rows}<button class="add-btn purple" onclick="openRoleModal()"><i class="fas fa-plus"></i> Создать звание</button></div>`;
         }
         else if (section === 'settings') {
             const theme = (currentUser && currentUser.theme) ? currentUser.theme : 'red';
             content.innerHTML = `
-                <div class="content-header"><h1>НАСТРОЙКИ ДИЗАЙНА</h1><div class="breadcrumb">// ДФД · <span>Дизайн</span></div></div>
+                <div class="content-header"><h1>НАСТРОЙКИ ДИЗАЙНА</h1><div class="breadcrumb">// CFD · <span>Дизайн</span></div></div>
                 <div class="panel"><div class="panel-title"><i class="fas fa-palette"></i> Цветовая тема</div>
                 <div class="theme-grid">
                     <div class="theme-item ${theme === 'red' ? 'active' : ''}" onclick="setTheme('red')">
                         <div class="theme-preview" style="background: linear-gradient(135deg, #0a0a0a, #e53935);"><i class="fas fa-fire"></i></div>
-                        <div class="theme-name">Тёмно-красная</div>
+                        <div class="theme-name">Тёмная (огонь)</div>
                         <div class="theme-desc">#0a0a0a / #e53935</div>
                     </div>
                     <div class="theme-item ${theme === 'light' ? 'active' : ''}" onclick="setTheme('light')">
@@ -2095,7 +2138,7 @@
     setInterval(updateClock, 1000);
     if (currentUser) openApp();
     else checkSiteAccess();
-    console.log('ДФД Terminal loaded.');
+    console.log('CFD Terminal loaded.');
 })();
 </script>
 
